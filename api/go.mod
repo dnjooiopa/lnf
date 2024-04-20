@@ -8,6 +8,7 @@ require (
 	github.com/mattn/go-sqlite3 v1.14.22
 	github.com/moonrhythm/httpmux v1.2.0
 	github.com/moonrhythm/parapet v0.13.4
+	github.com/moonrhythm/validator v1.3.0
 )
 
 require (

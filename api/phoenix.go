@@ -1,10 +1,17 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
+	"io"
 	"net/http"
+	"net/url"
+	"strconv"
 	"time"
+
+	"github.com/moonrhythm/validator"
 )
 
 type PhoenixClient struct {
@@ -25,7 +32,7 @@ type GetBalanceResult struct {
 }
 
 func (c *PhoenixClient) GetBalance(ctx context.Context) (*GetBalanceResult, error) {
-	resp, err := c.doRequest(http.MethodGet, "/getbalance")
+	resp, err := c.reqGET("/getbalance")
 	if err != nil {
 		return nil, err
 	}
@@ -53,7 +60,7 @@ type GetNodeInfoResult struct {
 }
 
 func (c *PhoenixClient) GetNodeInfo(ctx context.Context) (*GetNodeInfoResult, error) {
-	resp, err := c.doRequest(http.MethodGet, "/getinfo")
+	resp, err := c.reqGET("/getinfo")
 	if err != nil {
 		return nil, err
 	}
@@ -68,13 +75,87 @@ func (c *PhoenixClient) GetNodeInfo(ctx context.Context) (*GetNodeInfoResult, er
 	return &result, nil
 }
 
-func (c *PhoenixClient) doRequest(method, path string) (*http.Response, error) {
-	req, err := http.NewRequest(method, c.apiURL+path, nil)
+type CreateInvoiceParams struct {
+	Description string `json:"description"`
+	AmountSat   int    `json:"amountSat"`
+	ExternalID  string `json:"externalId"`
+}
+
+func (p *CreateInvoiceParams) Valid() error {
+	v := validator.New()
+
+	v.Must(p.AmountSat > 0 && p.AmountSat < 2000000, "amountSat must be between 1 and 2000000")
+
+	return v.Error()
+}
+
+type CreateInvoiceResult struct {
+	AmountSat   int    `json:"amountSat"`
+	PaymentHash string `json:"paymentHash"`
+	Serialized  string `json:"serialized"`
+}
+
+const defaultExternalID = "0"
+
+func (c *PhoenixClient) CreateInvoice(ctx context.Context, p *CreateInvoiceParams) (*CreateInvoiceResult, error) {
+	if err := p.Valid(); err != nil {
+		return nil, err
+	}
+
+	if p.ExternalID == "" {
+		p.ExternalID = defaultExternalID
+	}
+
+	amountSatStr := strconv.Itoa(p.AmountSat)
+
+	form := url.Values{}
+	form.Add("amountSat", amountSatStr)
+	form.Add("description", p.Description)
+	form.Add("externalId", p.ExternalID)
+
+	resp, err := c.reqPOST("/createinvoice", []byte(form.Encode()))
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+
+	data, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var result CreateInvoiceResult
+	if err := json.Unmarshal(data, &result); err != nil {
+		return nil, errors.New(string(data))
+	}
+
+	return &result, nil
+}
+
+func (c *PhoenixClient) reqGET(path string) (*http.Response, error) {
+	req, err := http.NewRequest(http.MethodGet, c.apiURL+path, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	req.SetBasicAuth("", c.apiKey)
+
+	cc := &http.Client{
+		Timeout: 15 * time.Second,
+	}
+
+	return cc.Do(req)
+}
+
+func (c *PhoenixClient) reqPOST(path string, body []byte) (*http.Response, error) {
+	req, err := http.NewRequest(http.MethodPost, c.apiURL+path, bytes.NewBuffer(body))
+	if err != nil {
+		return nil, err
+	}
+
+	req.SetBasicAuth("", c.apiKey)
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 
 	cc := &http.Client{
 		Timeout: 15 * time.Second,

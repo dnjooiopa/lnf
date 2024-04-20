@@ -14,6 +14,8 @@ github.com/moonrhythm/httpmux v1.2.0 h1:9MxKlpRyolg3GDySJGyf4phogVpaClkhbec5eFEu
 github.com/moonrhythm/httpmux v1.2.0/go.mod h1:h2GSszA6yEUZiksc9kVNiteLrYeXhDKH9zNaN7RglVE=
 github.com/moonrhythm/parapet v0.13.4 h1:EKK6Fk1YHhZE6dPzytiRaNA7Li6BWABfMbvvXHixGfw=
 github.com/moonrhythm/parapet v0.13.4/go.mod h1:Cds0PrfsvIuytXKsrBeWhgNMfjwpa1PhTQs1MP2O0Qs=
+github.com/moonrhythm/validator v1.3.0 h1:OzZSW8Xtb66Gz7SA8qzY3ANupgdMojLFC1imDs1utOM=
+github.com/moonrhythm/validator v1.3.0/go.mod h1:gbDyBOwWGzphP8K2Sdrd9+MveRVxzxm+ezecimvu9UU=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/stretchr/testify v1.9.0 h1:HtqpIVDClZ4nwg75+f6Lvsy/wHu+3BoSGCbBAcpTsTg=

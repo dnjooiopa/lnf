@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"log"
+	"net/http"
 	"time"
 
 	"github.com/acoshift/arpc/v2"
@@ -28,6 +29,11 @@ func main() {
 	am := arpc.New()
 	mux := httpmux.New()
 	pc := NewPhoenixClient(cfg.APIURL, cfg.APIKey)
+
+	am.WrapError = WrapError
+	am.OnError(func(w http.ResponseWriter, r *http.Request, req any, err error) {
+		log.Printf("[ERR] endpoint: %s, error: %v", r.URL.Path, err)
+	})
 
 	MountHandler(mux, am, pc)
 
