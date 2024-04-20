@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"log"
 	"net/http"
@@ -42,6 +43,8 @@ func main() {
 	srv.Handler = mux
 
 	srv.Use(parapet.MiddlewareFunc(DBMiddleware(db)))
+
+	go StartBgWorker(NewDBContext(context.Background(), db))
 
 	log.Println("server started on:", srv.Addr)
 	if err := srv.ListenAndServe(); err != nil {
