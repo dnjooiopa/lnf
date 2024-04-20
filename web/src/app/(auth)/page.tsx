@@ -16,7 +16,7 @@ const Page = () => {
 
   return (
     <main className="h-screen mt-24 text-center">
-      <Balance balance={999999} unit={BalanceUnit.SATS} />
+      <Balance unit={BalanceUnit.SATS} />
     </main>
   )
 }
