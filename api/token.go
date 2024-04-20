@@ -10,12 +10,21 @@ import (
 const TokenLifetime = 24 * time.Hour
 
 func ValidToken(ctx context.Context, token string) error {
+	hashedToken := HashToken(token)
+
 	r := QueryRowContext(ctx, `
 			SELECT token 
 			FROM tokens 
-			WHERE token = ? AND expired_at > NOW()
-	`)
-	return r.Err()
+			WHERE token = ? AND expired_at > CURRENT_TIMESTAMP
+	`, hashedToken,
+	)
+	if err := r.Err(); err != nil {
+		return err
+	}
+	if err := r.Scan(&hashedToken); err != nil {
+		return err
+	}
+	return nil
 }
 
 func InsertToken(ctx context.Context, token string, expiredAt time.Time) error {

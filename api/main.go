@@ -27,7 +27,9 @@ func main() {
 
 	am := arpc.New()
 	mux := httpmux.New()
-	MountHandler(mux, am)
+	pc := NewPhoenixClient(cfg.APIURL, cfg.APIKey)
+
+	MountHandler(mux, am, pc)
 
 	srv := parapet.NewBackend()
 	srv.Addr = ":8080"
