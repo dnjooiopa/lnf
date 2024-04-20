@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	"time"
+
+	"github.com/dnjooiopa/lnf/dbctx"
 )
 
 func StartBgWorker(ctx context.Context) error {
@@ -20,6 +22,6 @@ func StartBgWorker(ctx context.Context) error {
 }
 
 func ClearExpiredTokens(ctx context.Context) error {
-	_, err := ExecContext(ctx, `DELETE FROM tokens WHERE expired_at < CURRENT_TIMESTAMP`)
+	_, err := dbctx.ExecContext(ctx, `DELETE FROM tokens WHERE expired_at < CURRENT_TIMESTAMP`)
 	return err
 }

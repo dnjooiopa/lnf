@@ -5,6 +5,8 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	"time"
+
+	"github.com/dnjooiopa/lnf/dbctx"
 )
 
 const TokenLifetime = 24 * time.Hour
@@ -12,7 +14,7 @@ const TokenLifetime = 24 * time.Hour
 func ValidToken(ctx context.Context, token string) error {
 	hashedToken := HashToken(token)
 
-	r := QueryRowContext(ctx, `
+	r := dbctx.QueryRowContext(ctx, `
 			SELECT token 
 			FROM tokens 
 			WHERE token = ? AND expired_at > CURRENT_TIMESTAMP
@@ -30,7 +32,7 @@ func ValidToken(ctx context.Context, token string) error {
 func InsertToken(ctx context.Context, token string, expiredAt time.Time) error {
 	hashedToken := HashToken(token)
 
-	_, err := ExecContext(ctx, `
+	_, err := dbctx.ExecContext(ctx, `
 		INSERT INTO tokens (token, expired_at)
 		VALUES (?, ?)
 	`, hashedToken, expiredAt,
@@ -41,7 +43,7 @@ func InsertToken(ctx context.Context, token string, expiredAt time.Time) error {
 func DeleteToken(ctx context.Context, token string) error {
 	hashedToken := HashToken(token)
 
-	_, err := ExecContext(ctx, `
+	_, err := dbctx.ExecContext(ctx, `
 		DELETE FROM tokens
 		WHERE token = ?
 	`, hashedToken,

@@ -10,6 +10,8 @@ import (
 	"github.com/acoshift/arpc/v2"
 	"github.com/moonrhythm/httpmux"
 	"github.com/moonrhythm/parapet"
+
+	"github.com/dnjooiopa/lnf/dbctx"
 )
 
 func main() {
@@ -22,7 +24,9 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	err = AutoMigrate(db, cfg.PINs)
+	ctx := dbctx.NewDBContext(context.Background(), db)
+
+	err = AutoMigrate(ctx, cfg.PINs)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -42,9 +46,9 @@ func main() {
 	srv.Addr = ":8080"
 	srv.Handler = mux
 
-	srv.Use(parapet.MiddlewareFunc(DBMiddleware(db)))
+	srv.Use(parapet.MiddlewareFunc(dbctx.DBMiddleware(db)))
 
-	go StartBgWorker(NewDBContext(context.Background(), db))
+	go StartBgWorker(ctx)
 
 	log.Println("server started on:", srv.Addr)
 	if err := srv.ListenAndServe(); err != nil {

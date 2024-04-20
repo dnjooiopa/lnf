@@ -6,6 +6,8 @@ import (
 	"time"
 
 	"github.com/acoshift/arpc/v2"
+
+	"github.com/dnjooiopa/lnf/dbctx"
 )
 
 var (
@@ -22,7 +24,7 @@ type LoginResult struct {
 
 func Login(ctx context.Context, p *LoginParams) (*LoginResult, error) {
 	hashedPin := SHA256(p.Pin)
-	r := QueryRowContext(ctx, `
+	r := dbctx.QueryRowContext(ctx, `
 		SELECT pin
 		FROM users
 		WHERE pin = ?
