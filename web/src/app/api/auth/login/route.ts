@@ -1,14 +1,11 @@
 import { NextRequest } from 'next/server'
+import { makeResponse } from '../../response'
 
 const apiEndpoint = process.env.API_ENDPOINT
 
 export async function POST(req: NextRequest) {
   try {
     const { pin } = await req.json()
-
-    if (!pin) {
-      return new Response('pin is required', { status: 200 })
-    }
 
     const res = await fetch(`${apiEndpoint}/auth.login`, {
       method: 'POST',
@@ -19,10 +16,7 @@ export async function POST(req: NextRequest) {
     const data = await res.json()
 
     if (!data?.ok) {
-      return new Response(JSON.stringify(data), {
-        status: 200,
-        headers: { 'Content-Type': 'application/json' },
-      })
+      return makeResponse(data)
     }
 
     const {
@@ -37,6 +31,6 @@ export async function POST(req: NextRequest) {
       },
     })
   } catch (err) {
-    return new Response('login failed', { status: 401 })
+    return makeResponse({ ok: false, error: { code: 'INTERNAL_SERVER_ERROR' } })
   }
 }

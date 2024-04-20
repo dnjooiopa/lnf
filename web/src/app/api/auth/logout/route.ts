@@ -1,4 +1,5 @@
 import { NextRequest } from 'next/server'
+import { makeResponse } from '../../response'
 
 const apiEndpoint = process.env.API_ENDPOINT
 
@@ -22,11 +23,6 @@ export async function POST(req: NextRequest) {
       },
     })
   } catch (err) {
-    return new Response(JSON.stringify({ ok: false, error: { code: 'INTERNAL_SERVER_ERROR' } }), {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
+    return makeResponse({ ok: false, error: { code: 'INTERNAL_SERVER_ERROR' } })
   }
 }
