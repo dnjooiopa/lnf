@@ -1,3 +1,4 @@
+import { Fragment } from 'react'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
@@ -15,9 +16,9 @@ const Page = () => {
   // TODO: validate token
 
   return (
-    <main className="h-screen mt-24 text-center">
+    <Fragment>
       <Balance unit={BalanceUnit.SATS} />
-    </main>
+    </Fragment>
   )
 }
 
