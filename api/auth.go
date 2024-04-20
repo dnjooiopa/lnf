@@ -47,3 +47,11 @@ func Login(ctx context.Context, p *LoginParams) (*LoginResult, error) {
 		Token: token,
 	}, nil
 }
+
+type LogoutParams struct {
+	Token string `json:"token"`
+}
+
+func Logout(ctx context.Context, p *LogoutParams) error {
+	return DeleteToken(ctx, p.Token)
+}

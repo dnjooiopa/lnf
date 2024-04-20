@@ -9,6 +9,7 @@ import (
 
 func MountHandler(m *httpmux.Mux, am *arpc.Manager, pc *PhoenixClient) {
 	m.Handle("/auth.login", am.Handler(Login))
+	m.Handle("/auth.logout", am.Handler(Logout))
 
 	m = m.Group("/", am.Middleware(authMiddleware))
 	m.Handle("/lnf.getbalance", am.Handler(pc.GetBalance))

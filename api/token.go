@@ -38,6 +38,17 @@ func InsertToken(ctx context.Context, token string, expiredAt time.Time) error {
 	return err
 }
 
+func DeleteToken(ctx context.Context, token string) error {
+	hashedToken := HashToken(token)
+
+	_, err := ExecContext(ctx, `
+		DELETE FROM tokens
+		WHERE token = ?
+	`, hashedToken,
+	)
+	return err
+}
+
 func HashToken(token string) string {
 	hashed := SHA256(token)
 	return base64.RawURLEncoding.EncodeToString([]byte(hashed))
