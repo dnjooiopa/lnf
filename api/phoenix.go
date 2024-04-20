@@ -133,13 +133,71 @@ func (c *PhoenixClient) CreateInvoice(ctx context.Context, p *CreateInvoiceParam
 	return &result, nil
 }
 
-func (c *PhoenixClient) reqGET(path string) (*http.Response, error) {
+type ListIncomingPaymentsParams struct {
+	ExternalID string `json:"externalId"`
+}
+
+type ListIncomingPaymentsResult struct {
+	PaymentHash string `json:"paymentHash"`
+	Preimage    string `json:"preimage"`
+	ExternalID  string `json:"externalId"`
+	Description string `json:"description"`
+	Invoice     string `json:"invoice"`
+	IsPaid      bool   `json:"isPaid"`
+	ReceivedSat int    `json:"receivedSat"`
+	Fees        int    `json:"fees"`
+	CompletedAt int    `json:"completedAt"`
+	CreatedAt   int    `json:"createdAt"`
+}
+
+func (c *PhoenixClient) ListIncomingPayments(ctx context.Context, p *ListIncomingPaymentsParams) ([]ListIncomingPaymentsResult, error) {
+	if p.ExternalID == "" {
+		p.ExternalID = defaultExternalID
+	}
+
+	resp, err := c.reqGET("/payments/incoming", KeyValue{
+		Key:   "externalId",
+		Value: p.ExternalID,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+
+	data, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var result []ListIncomingPaymentsResult
+	if err := json.Unmarshal(data, &result); err != nil {
+		return nil, errors.New(string(data))
+	}
+
+	return result, nil
+}
+
+type KeyValue struct {
+	Key   string `json:"key"`
+	Value string `json:"value"`
+}
+
+func (c *PhoenixClient) reqGET(path string, kv ...KeyValue) (*http.Response, error) {
 	req, err := http.NewRequest(http.MethodGet, c.apiURL+path, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	req.SetBasicAuth("", c.apiKey)
+
+	if len(kv) > 0 {
+		q := req.URL.Query()
+		for _, v := range kv {
+			q.Add(v.Key, v.Value)
+		}
+		req.URL.RawQuery = q.Encode()
+	}
 
 	cc := &http.Client{
 		Timeout: 15 * time.Second,
