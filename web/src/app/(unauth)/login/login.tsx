@@ -10,17 +10,19 @@ const Login: FC<{}> = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    const res = await fetch('/api/login', {
+    const res = await fetch('/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ pin }),
     })
 
-    if (res.ok) {
-      replace('/')
-    } else {
-      // handle error
+    const data = await res.json()
+
+    if (data?.error) {
+      return alert(data.error.code)
     }
+
+    replace('/')
   }
 
   return (
