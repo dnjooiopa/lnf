@@ -25,18 +25,7 @@ type GetBalanceResult struct {
 }
 
 func (c *PhoenixClient) GetBalance(ctx context.Context) (*GetBalanceResult, error) {
-	req, err := http.NewRequest(http.MethodGet, c.apiURL+"/getbalance", nil)
-	if err != nil {
-		return nil, err
-	}
-
-	req.SetBasicAuth("", c.apiKey)
-
-	cc := &http.Client{
-		Timeout: 15 * time.Second,
-	}
-
-	resp, err := cc.Do(req)
+	resp, err := c.doRequest(http.MethodGet, "/getbalance")
 	if err != nil {
 		return nil, err
 	}
