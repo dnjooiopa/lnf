@@ -108,12 +108,13 @@ func (c *PhoenixClient) CreateInvoice(ctx context.Context, p *CreateInvoiceParam
 
 	amountSatStr := strconv.Itoa(p.AmountSat)
 
-	form := url.Values{}
-	form.Add("amountSat", amountSatStr)
-	form.Add("description", p.Description)
-	form.Add("externalId", p.ExternalID)
+	payload := []KeyValue{
+		{Key: "amountSat", Value: amountSatStr},
+		{Key: "description", Value: p.Description},
+		{Key: "externalId", Value: p.ExternalID},
+	}
 
-	resp, err := c.reqPOST("/createinvoice", []byte(form.Encode()))
+	resp, err := c.reqPOST("/createinvoice", payload...)
 	if err != nil {
 		return nil, err
 	}
@@ -206,8 +207,13 @@ func (c *PhoenixClient) reqGET(path string, kv ...KeyValue) (*http.Response, err
 	return cc.Do(req)
 }
 
-func (c *PhoenixClient) reqPOST(path string, body []byte) (*http.Response, error) {
-	req, err := http.NewRequest(http.MethodPost, c.apiURL+path, bytes.NewBuffer(body))
+func (c *PhoenixClient) reqPOST(path string, kv ...KeyValue) (*http.Response, error) {
+	form := url.Values{}
+	for _, v := range kv {
+		form.Add(v.Key, v.Value)
+	}
+
+	req, err := http.NewRequest(http.MethodPost, c.apiURL+path, bytes.NewBuffer([]byte(form.Encode())))
 	if err != nil {
 		return nil, err
 	}
