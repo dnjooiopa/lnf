@@ -15,14 +15,18 @@ const Balance: FC<IBalanceProps> = ({ unit }) => {
   const [balanceSat, setBalanceSat] = useState(0)
 
   const fetchBalance = async () => {
-    const res = await fetch('/api/lnf.getbalance', {
-      method: 'POST',
-    })
+    try {
+      const res = await fetch('/api/lnf.getbalance', {
+        method: 'POST',
+      })
 
-    const data = await res.json()
-    const { balanceSat } = data.result
-    setBalanceSat(balanceSat)
-    setIsLoading(false)
+      const data = await res.json()
+      const { balanceSat } = data.result
+      setBalanceSat(balanceSat)
+      setIsLoading(false)
+    } catch (e) {
+      console.error('error:', e)
+    }
   }
 
   useEffect(() => {

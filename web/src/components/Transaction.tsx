@@ -25,22 +25,26 @@ const Transaction: FC<{}> = () => {
   const [payments, setPayments] = useState<Payment[]>([])
 
   const listIncomingPayments = async () => {
-    const res = await fetch('/api/lnf.listincomingpayments', {
-      method: 'POST',
-    })
-    const data = await res.json()
+    try {
+      const res = await fetch('/api/lnf.listincomingpayments', {
+        method: 'POST',
+      })
+      const data = await res.json()
 
-    // TODO: handle error
+      // TODO: handle error
 
-    // @ts-ignore
-    let ps: Payment[] = data.result.reverse().map(({ receivedSat, ...tx }) => ({
-      amount: receivedSat,
-      ...tx,
-    }))
+      // @ts-ignore
+      let ps: Payment[] = data.result.reverse().map(({ receivedSat, ...tx }) => ({
+        amount: receivedSat,
+        ...tx,
+      }))
 
-    ps = ps.filter(({ isPaid }) => isPaid)
+      ps = ps.filter(({ isPaid }) => isPaid)
 
-    setPayments(ps)
+      setPayments(ps)
+    } catch (e) {
+      console.error('error:', e)
+    }
   }
 
   useEffect(() => {

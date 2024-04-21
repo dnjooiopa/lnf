@@ -1,5 +1,7 @@
 import { NextRequest } from 'next/server'
+
 import { makeResponse } from '../../response'
+import { ErrorCode } from '@/enums'
 
 const apiEndpoint = process.env.API_ENDPOINT
 
@@ -31,6 +33,6 @@ export async function POST(req: NextRequest) {
       },
     })
   } catch (err) {
-    return makeResponse({ ok: false, error: { code: 'INTERNAL_SERVER_ERROR' } })
+    return makeResponse({ ok: false, error: { code: ErrorCode.INTERNAL_SERVER_ERROR } })
   }
 }
