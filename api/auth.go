@@ -57,3 +57,7 @@ type LogoutParams struct {
 func Logout(ctx context.Context, p *LogoutParams) error {
 	return DeleteToken(ctx, p.Token)
 }
+
+func PurgeTokens(ctx context.Context) error {
+	return PurgeAllTokens(ctx)
+}

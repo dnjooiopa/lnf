@@ -51,6 +51,13 @@ func DeleteToken(ctx context.Context, token string) error {
 	return err
 }
 
+func PurgeAllTokens(ctx context.Context) error {
+	_, err := dbctx.ExecContext(ctx, `
+		DELETE FROM tokens
+	`)
+	return err
+}
+
 func HashToken(token string) string {
 	hashed := SHA256(token)
 	return base64.RawURLEncoding.EncodeToString([]byte(hashed))
