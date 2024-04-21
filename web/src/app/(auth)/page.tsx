@@ -21,7 +21,7 @@ const Page = () => {
       <Balance unit={BalanceUnit.SATS} />
       <div className="mt-4">
         <Link href="/receive">
-          <button className="rounded border p-2">
+          <button className="rounded border p-2 bg-emerald-300">
             <span>Receive</span>
           </button>
         </Link>
