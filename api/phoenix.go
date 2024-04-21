@@ -134,6 +134,60 @@ func (c *PhoenixClient) CreateInvoice(ctx context.Context, p *CreateInvoiceParam
 	return &result, nil
 }
 
+type PayInvoiceParams struct {
+	AmountSat int    `json:"amountSat,omitempty"`
+	Invoice   string `json:"invoice"`
+}
+
+func (p *PayInvoiceParams) Valid() error {
+	v := validator.New()
+
+	v.Must(p.Invoice != "", "invoice is required")
+
+	return v.Error()
+}
+
+type PayInvoiceResult struct {
+	RecipientAmountSat int    `json:"recipientAmountSat"`
+	RoutingFeeSat      int    `json:"routingFeeSat"`
+	PaymentID          string `json:"paymentId"`
+	PaymentHash        string `json:"paymentHash"`
+	PaymentPreimage    string `json:"paymentPreimage"`
+}
+
+func (c *PhoenixClient) PayInvoice(ctx context.Context, p *PayInvoiceParams) (*PayInvoiceResult, error) {
+	if err := p.Valid(); err != nil {
+		return nil, err
+	}
+
+	payload := []KeyValue{
+		{Key: "invoice", Value: p.Invoice},
+	}
+
+	if p.AmountSat > 0 {
+		payload = append(payload, KeyValue{Key: "amountSat", Value: strconv.Itoa(p.AmountSat)})
+	}
+
+	resp, err := c.reqPOST("/payinvoice", payload...)
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+
+	data, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var result PayInvoiceResult
+	if err := json.Unmarshal(data, &result); err != nil {
+		return nil, errors.New(string(data))
+	}
+
+	return &result, nil
+}
+
 type ListIncomingPaymentsParams struct {
 	ExternalID string `json:"externalId"`
 }
