@@ -1,0 +1,46 @@
+name: Build Web Docker Image
+
+on:
+  release:
+    branches: [main]
+    types: [published]
+    paths:
+      - web/**
+      - .github/workflows/build-web.yaml
+
+env:
+  REGISTRY: ghcr.io/dnjooiopa
+
+jobs:
+  build_web:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Log in to GitHub Docker Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build image
+        uses: docker/build-push-action@v2
+        with:
+          platforms: linux/amd64,linux/arm64
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          push: true
+          context: ./web
+          file: ./web/Dockerfile
+          tags: ${{ env.REGISTRY }}/lnf-web:latest,${{ env.REGISTRY }}/lnf-web:${{ github.event.release.tag_name }}
