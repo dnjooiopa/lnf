@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"io"
+	"log"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -15,8 +16,9 @@ import (
 )
 
 type PhoenixClient struct {
-	apiURL string
-	apiKey string
+	apiURL          string
+	apiKey          string
+	lineNotifyToken string
 }
 
 func NewPhoenixClient(apiURL, apiKey string) *PhoenixClient {
@@ -231,6 +233,31 @@ func (c *PhoenixClient) ListIncomingPayments(ctx context.Context, p *ListIncomin
 	}
 
 	return result, nil
+}
+
+type WebhookParams struct {
+	Type        string `json:"type"`
+	AmountSat   int    `json:"amountSat"`
+	PaymentHash string `json:"paymentHash"`
+	ExternalID  string `json:"externalId"`
+}
+
+func (c *PhoenixClient) Webhook(ctx context.Context, p *WebhookParams) error {
+	log.Printf("[INFO] webhook: %+v\n", p)
+
+	if c.lineNotifyToken != "" {
+		message := "Payment received: " + strconv.Itoa(p.AmountSat) + " sats"
+		if err := SendLineNotify(c.lineNotifyToken, message); err != nil {
+			log.Println("[ERR] failed to send line notify", err)
+		}
+	}
+
+	// do other stuff ...
+	return nil
+}
+
+func (c *PhoenixClient) RegisterLineNotify(token string) {
+	c.lineNotifyToken = token
 }
 
 type KeyValue struct {

@@ -7,10 +7,11 @@ import (
 )
 
 type Config struct {
-	DBSource string
-	APIURL   string
-	APIKey   string
-	PINs     []string
+	DBSource        string
+	APIURL          string
+	APIKey          string
+	PINs            []string
+	LineNotifyToken string
 }
 
 func NewConfig() *Config {
@@ -19,9 +20,10 @@ func NewConfig() *Config {
 	pins := strings.Split(c.String("PINS"), ",")
 
 	return &Config{
-		DBSource: c.StringDefault("DB_SOURCE", "/app/db/lnf.db"),
-		APIURL:   c.String("API_URL"),
-		APIKey:   c.String("API_KEY"),
-		PINs:     pins,
+		DBSource:        c.StringDefault("DB_SOURCE", "/app/db/lnf.db"),
+		APIURL:          c.String("API_URL"),
+		APIKey:          c.String("API_KEY"),
+		PINs:            pins,
+		LineNotifyToken: c.String("LINE_NOTIFY_TOKEN"),
 	}
 }

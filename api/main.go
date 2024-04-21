@@ -31,14 +31,16 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	am := arpc.New()
 	mux := httpmux.New()
-	pc := NewPhoenixClient(cfg.APIURL, cfg.APIKey)
 
+	am := arpc.New()
 	am.WrapError = WrapError
 	am.OnError(func(w http.ResponseWriter, r *http.Request, req any, err error) {
 		log.Printf("[ERR] endpoint: %s, error: %v", r.URL.Path, err)
 	})
+
+	pc := NewPhoenixClient(cfg.APIURL, cfg.APIKey)
+	pc.RegisterLineNotify(cfg.LineNotifyToken)
 
 	MountHandler(mux, am, pc)
 
