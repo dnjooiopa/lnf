@@ -21,7 +21,11 @@ const LogoutButton = () => {
     } catch (err) {}
   }
 
-  return <button onClick={handleLogout}>Logout</button>
+  return (
+    <button className="p-2 rounded border" onClick={handleLogout}>
+      Logout
+    </button>
+  )
 }
 
 export default LogoutButton
