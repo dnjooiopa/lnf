@@ -30,7 +30,7 @@ const Login: FC<{}> = () => {
       <form onSubmit={handleSubmit}>
         <label>
           <span>Enter your PIN:</span>
-          <input type="password" value={pin} onChange={(e) => setPin(e.target.value)} />
+          <input type="password" value={pin} onChange={(e) => setPin(e.target.value)} autoFocus />
         </label>
         <button type="submit">Login</button>
       </form>
