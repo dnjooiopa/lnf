@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { FC, Fragment, useState } from 'react'
+import { FC, useState } from 'react'
 
 const Login: FC<{}> = () => {
   const { replace } = useRouter()
@@ -26,15 +26,19 @@ const Login: FC<{}> = () => {
   }
 
   return (
-    <Fragment>
-      <form onSubmit={handleSubmit}>
-        <label>
-          <span>Enter your PIN:</span>
-          <input type="password" value={pin} onChange={(e) => setPin(e.target.value)} autoFocus />
-        </label>
-        <button type="submit">Login</button>
-      </form>
-    </Fragment>
+    <form className="mt-20 w-full max-w-[400px] px-6" onSubmit={handleSubmit}>
+      <input
+        className="p-3 w-full border"
+        placeholder="Enter your pin"
+        type="password"
+        value={pin}
+        onChange={(e) => setPin(e.target.value)}
+        autoFocus
+      />
+      <button className="py-2 rounded border w-full mt-2 bg-emerald-300" type="submit">
+        Login
+      </button>
+    </form>
   )
 }
 

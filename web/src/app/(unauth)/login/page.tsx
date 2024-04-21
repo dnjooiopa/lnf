@@ -1,8 +1,8 @@
-import { FC, Fragment } from 'react'
+import { FC } from 'react'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-import Login from './login'
+import Login from './Login'
 
 const Page: FC<{}> = () => {
   const { get } = cookies()
@@ -13,9 +13,9 @@ const Page: FC<{}> = () => {
   }
 
   return (
-    <Fragment>
+    <div className="flex flex-col items-center">
       <Login />
-    </Fragment>
+    </div>
   )
 }
 
