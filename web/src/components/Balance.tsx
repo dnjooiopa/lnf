@@ -18,6 +18,8 @@ const Balance: FC<IBalanceProps> = ({ unit }) => {
     try {
       const res = await fetch('/api/lnf.getbalance', {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({}),
       })
 
       const data = await res.json()

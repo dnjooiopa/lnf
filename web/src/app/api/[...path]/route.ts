@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
   try {
     const token = req.cookies.get('token')?.value
     const url = new URL(req.nextUrl.pathname.replace('/api', ''), apiEndpoint)
-    const body = req.json() || {}
+    const body = (await req.json()) || {}
 
     const res = await fetch(url, {
       method: 'POST',

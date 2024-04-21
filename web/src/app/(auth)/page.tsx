@@ -1,5 +1,6 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
+import Link from 'next/link'
 
 import Balance from '@/components/Balance'
 import { BalanceUnit } from '@/enums'
@@ -16,9 +17,15 @@ const Page = () => {
   // TODO: validate token
 
   return (
-    <div>
+    <div className="mt-20">
       <Balance unit={BalanceUnit.SATS} />
-
+      <div className="mt-4">
+        <Link href="/receive">
+          <button className="rounded border p-2">
+            <span>Receive</span>
+          </button>
+        </Link>
+      </div>
       <div className="mt-4" />
       <Transaction />
     </div>

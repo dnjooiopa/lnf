@@ -28,6 +28,8 @@ const Transaction: FC<{}> = () => {
     try {
       const res = await fetch('/api/lnf.listincomingpayments', {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({}),
       })
       const data = await res.json()
 
