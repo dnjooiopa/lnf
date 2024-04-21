@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 
 import Balance from '@/components/Balance'
 import { BalanceUnit } from '@/enums'
+import Transaction from '@/components/Transaction'
 
 const Page = () => {
   const { get } = cookies()
@@ -16,9 +17,12 @@ const Page = () => {
   // TODO: validate token
 
   return (
-    <Fragment>
+    <div>
       <Balance unit={BalanceUnit.SATS} />
-    </Fragment>
+
+      <div className="mt-4" />
+      <Transaction />
+    </div>
   )
 }
 
