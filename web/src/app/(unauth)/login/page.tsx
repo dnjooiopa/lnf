@@ -2,7 +2,7 @@ import { FC } from 'react'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-import Login from './Login'
+import LoginForm from './LoginForm'
 
 const Page: FC<{}> = () => {
   const { get } = cookies()
@@ -14,7 +14,7 @@ const Page: FC<{}> = () => {
 
   return (
     <div className="flex flex-col items-center">
-      <Login />
+      <LoginForm />
     </div>
   )
 }
