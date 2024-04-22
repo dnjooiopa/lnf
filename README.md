@@ -12,6 +12,7 @@ Create file .env
 API_URL=http://phoenixd:9740
 API_KEY=phoenixd_password
 PINS=xxxxxx,yyyyyy
+LINE_NOTIFY_TOKEN=xxxxxx # optional
 ```
 
 ```sh
