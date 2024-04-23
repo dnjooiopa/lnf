@@ -21,12 +21,12 @@ const Page = () => {
       <Balance unit={BalanceUnit.SATS} />
       <div className="flex mt-4 gap-4 justify-center">
         <Link href="/receive">
-          <button className="w-[128px] rounded border p-2 bg-emerald-300">
+          <button className="w-[128px] rounded p-2 bg-gray-700">
             <span>Receive</span>
           </button>
         </Link>
         <Link href="/send">
-          <button className="w-[128px] rounded border p-2 bg-emerald-300">
+          <button className="w-[128px] rounded p-2 bg-gray-700">
             <span>Send</span>
           </button>
         </Link>

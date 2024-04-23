@@ -48,15 +48,15 @@ const Receive: FC<{}> = () => {
 
       <form onSubmit={handleSubmit} className="mt-4 flex flex-col items-center gap-4">
         <input
-          className="p-3 rounded border w-full"
+          className="p-3 w-full rounded border border-gray-700 bg-inherit"
           type="number"
           value={amountSat}
           min={0}
           autoFocus
           onChange={(e) => setAmountSat(parseInt(e.target.value))}
         />
-        <button className="w-full p-3 rounded border bg-emerald-300" type="submit">
-          Create
+        <button className="w-full p-3 rounded bg-gray-700" type="submit">
+          Create invoice
         </button>
       </form>
 

@@ -28,14 +28,14 @@ const Login: FC<{}> = () => {
   return (
     <form className="mt-20 w-full max-w-[400px] px-6" onSubmit={handleSubmit}>
       <input
-        className="p-3 w-full border"
+        className="p-3 w-full rounded border border-gray-700 bg-inherit"
         placeholder="Enter your pin"
         type="password"
         value={pin}
         onChange={(e) => setPin(e.target.value)}
         autoFocus
       />
-      <button className="py-2 rounded border w-full mt-2 bg-emerald-300" type="submit">
+      <button className="py-2 rounded w-full mt-2 bg-gray-700" type="submit">
         Login
       </button>
     </form>

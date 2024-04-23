@@ -22,7 +22,7 @@ const LogoutButton = () => {
   }
 
   return (
-    <button className="p-2 rounded border" onClick={handleLogout}>
+    <button className="p-2 rounded border border-gray-700" onClick={handleLogout}>
       Logout
     </button>
   )

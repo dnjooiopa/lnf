@@ -46,14 +46,14 @@ const Send: FC<{}> = () => {
 
       <form onSubmit={handleSubmit} className="mt-4 flex flex-col items-center gap-4">
         <input
-          className="p-3 rounded border w-full"
+          className="p-3 w-full rounded border border-gray-700 bg-inherit"
           type="text"
           value={invoice}
           min={0}
           autoFocus
           onChange={(e) => setInvoice(e.target.value)}
         />
-        <button className="w-full p-3 rounded border bg-emerald-300" type="submit">
+        <button className="w-full p-3 rounded bg-gray-700" type="submit">
           Send
         </button>
       </form>
