@@ -8,6 +8,10 @@ const apiEndpoint = process.env.API_ENDPOINT
 export async function POST(req: NextRequest) {
   try {
     const token = req.cookies.get('token')?.value
+    if (!token) {
+      return makeResponse({ ok: false, error: { code: ErrorCode.UNAUTHORIZED } })
+    }
+
     const url = new URL(req.nextUrl.pathname.replace('/api', ''), apiEndpoint)
     const body = (await req.json()) || {}
 
