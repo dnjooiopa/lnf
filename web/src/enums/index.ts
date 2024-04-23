@@ -10,3 +10,8 @@ export enum ErrorCode {
   UNAUTHORIZED = 'UNAUTHORIZED',
   INVALID_TOKEN = 'INVALID_TOKEN',
 }
+
+export enum TransactionType {
+  PAYMENT_RECEIVED = 'payment_received',
+  PAYMENT_SENT = 'payment_sent',
+}

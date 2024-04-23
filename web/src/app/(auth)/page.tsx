@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 import Balance from '@/components/Balance'
 import { BalanceUnit } from '@/enums'
-import Transaction from '@/components/Transaction'
+import Transactions from '@/components/Transactions'
 
 const Page = () => {
   const { get } = cookies()
@@ -32,7 +32,7 @@ const Page = () => {
         </Link>
       </div>
       <div className="mt-4" />
-      <Transaction />
+      <Transactions />
     </div>
   )
 }
