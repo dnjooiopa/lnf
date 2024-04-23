@@ -28,9 +28,10 @@ const formatDateTime = (ts: number) => {
 }
 
 const Tx = ({ amountSat, description, createdAt, type }: Transaction) => {
-  const color = type === TransactionType.PAYMENT_SENT ? 'text-red-500' : 'text-green-500'
-  const displayAmount = type === TransactionType.PAYMENT_SENT ? -amountSat : amountSat
+  const amountColor = type === TransactionType.PAYMENT_SENT ? 'text-gray-100' : 'text-green-500'
+  const displayAmount = type === TransactionType.PAYMENT_SENT ? `-${amountSat}` : `+${amountSat}`
   const displayDescription = description || (type === TransactionType.PAYMENT_SENT ? 'Sent' : 'Received')
+
   return (
     <div className="flex justify-between mt-3">
       <div className="flex flex-col items-start">
@@ -42,7 +43,7 @@ const Tx = ({ amountSat, description, createdAt, type }: Transaction) => {
         </div>
       </div>
       <div>
-        <span className={`text-lg ${color}`}>{displayAmount} sats</span>
+        <span className={`text-lg ${amountColor}`}>{displayAmount} sats</span>
       </div>
     </div>
   )
