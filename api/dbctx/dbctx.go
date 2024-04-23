@@ -20,6 +20,10 @@ func QueryRowContext(ctx context.Context, query string, args ...interface{}) *sq
 	return DBFromContext(ctx).QueryRowContext(ctx, query, args...)
 }
 
+func QueryContext(ctx context.Context, query string, args ...interface{}) (*sql.Rows, error) {
+	return DBFromContext(ctx).QueryContext(ctx, query, args...)
+}
+
 func Exec(ctx context.Context, query string, args ...interface{}) (sql.Result, error) {
 	return DBFromContext(ctx).Exec(query, args...)
 }

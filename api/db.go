@@ -31,6 +31,26 @@ func AutoMigrate(ctx context.Context, pins []string) error {
 		return err
 	}
 
+	_, err = dbctx.Exec(
+		ctx, `
+		CREATE TABLE IF NOT EXISTS transactions (
+			payment_hash text primary key,
+			type text not null,
+			payment_id text,
+			amount_sat integer not null,
+			fees integer,
+			external_id text,
+			description text,
+			invoice text,
+			is_paid boolean,
+			preimage text,
+			completed_at timestamp,
+			created_at timestamp not null
+		)`)
+	if err != nil {
+		return err
+	}
+
 	for _, pin := range pins {
 		hashed := SHA256(pin)
 

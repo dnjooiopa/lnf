@@ -12,8 +12,11 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/acoshift/arpc/v2"
 	"github.com/moonrhythm/validator"
 )
+
+var errTransactionNotFound = arpc.NewErrorCode("TRANSACTION_NOT_FOUND", "")
 
 type PhoenixClient struct {
 	apiURL          string
@@ -133,6 +136,18 @@ func (c *PhoenixClient) CreateInvoice(ctx context.Context, p *CreateInvoiceParam
 		return nil, errors.New(string(data))
 	}
 
+	if err = InsertTrasaction(ctx, &Transaction{
+		PaymentHash: result.PaymentHash,
+		Type:        TransactionTypeReceived,
+		AmountSat:   p.AmountSat,
+		ExternalID:  p.ExternalID,
+		Description: p.Description,
+		Invoice:     result.Serialized,
+		CreatedAt:   time.Now(),
+	}); err != nil {
+		return nil, err
+	}
+
 	return &result, nil
 }
 
@@ -185,6 +200,23 @@ func (c *PhoenixClient) PayInvoice(ctx context.Context, p *PayInvoiceParams) (*P
 	var result PayInvoiceResult
 	if err := json.Unmarshal(data, &result); err != nil {
 		return nil, errors.New(string(data))
+	}
+
+	now := time.Now()
+	err = InsertTrasaction(ctx, &Transaction{
+		PaymentHash: result.PaymentHash,
+		Type:        TransactionTypeSent,
+		PaymentID:   result.PaymentID,
+		AmountSat:   result.RecipientAmountSat,
+		Fees:        result.RoutingFeeSat,
+		Invoice:     p.Invoice,
+		IsPaid:      true,
+		Preimage:    result.PaymentPreimage,
+		CompletedAt: &now, // TODO: enhance later
+		CreatedAt:   now,
+	})
+	if err != nil {
+		return nil, err
 	}
 
 	return &result, nil
@@ -244,6 +276,29 @@ type WebhookParams struct {
 
 func (c *PhoenixClient) Webhook(ctx context.Context, p *WebhookParams) error {
 	log.Printf("[INFO] webhook: %+v\n", p)
+
+	tx, err := GetTransaction(ctx, p.PaymentHash)
+	if err != nil {
+		return err
+	}
+	if tx == nil {
+		return errTransactionNotFound
+	}
+
+	now := time.Now()
+	err = UpdateTransaction(ctx, &Transaction{
+		PaymentHash: p.PaymentHash,
+		Type:        p.Type,
+		AmountSat:   p.AmountSat,
+		ExternalID:  p.ExternalID,
+		Description: tx.Description,
+		Invoice:     tx.Invoice,
+		IsPaid:      true,
+		CompletedAt: &now, // TODO: enhance later
+	})
+	if err != nil {
+		return err
+	}
 
 	if c.lineNotifyToken != "" {
 		message := "Payment received: " + strconv.Itoa(p.AmountSat) + " sats"
