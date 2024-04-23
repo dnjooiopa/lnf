@@ -23,6 +23,7 @@ func MountHandler(m *httpmux.Mux, am *arpc.Manager, pc *PhoenixClient) {
 		m.Handle("/lnf.createinvoice", am.Handler(pc.CreateInvoice))
 		m.Handle("/lnf.payinvoice", am.Handler(pc.PayInvoice))
 		m.Handle("/lnf.listincomingpayments", am.Handler(pc.ListIncomingPayments))
+		m.Handle("/lnf.listtransactions", am.Handler(pc.ListTransactions))
 	}
 }
 

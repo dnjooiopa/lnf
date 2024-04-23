@@ -15,18 +15,18 @@ const (
 )
 
 type Transaction struct {
-	PaymentHash string
-	Type        string
-	PaymentID   string
-	AmountSat   int
-	Fees        int
-	ExternalID  string
-	Description string
-	Invoice     string
-	IsPaid      bool
-	Preimage    string
-	CompletedAt *time.Time
-	CreatedAt   time.Time
+	PaymentHash string     `json:"paymentHash"`
+	Type        string     `json:"type"`
+	PaymentID   string     `json:"paymentId"`
+	AmountSat   int        `json:"amountSat"`
+	Fees        int        `json:"fees"`
+	ExternalID  string     `json:"externalId"`
+	Description string     `json:"description"`
+	Invoice     string     `json:"invoice"`
+	IsPaid      bool       `json:"isPaid"`
+	Preimage    string     `json:"preimage"`
+	CompletedAt *time.Time `json:"completedAt"`
+	CreatedAt   time.Time  `json:"createdAt"`
 }
 
 func InsertTrasaction(ctx context.Context, tx *Transaction) error {

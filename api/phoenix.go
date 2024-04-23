@@ -311,6 +311,15 @@ func (c *PhoenixClient) Webhook(ctx context.Context, p *WebhookParams) error {
 	return nil
 }
 
+func (c *PhoenixClient) ListTransactions(ctx context.Context) ([]*Transaction, error) {
+	txs, err := ListAllTransactions(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return txs, nil
+}
+
 func (c *PhoenixClient) RegisterLineNotify(token string) {
 	c.lineNotifyToken = token
 }
