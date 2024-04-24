@@ -2,6 +2,7 @@
 
 import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
+import { IoMenu } from 'react-icons/io5'
 
 import LogoutButton from './LogoutButton'
 
@@ -10,7 +11,9 @@ const MenuDropdown = () => {
     <div className="fixed top-4 right-4 w-56 text-right">
       <Menu as="div" className="relative inline-block text-left">
         <div>
-          <Menu.Button className="justify-center">Menus</Menu.Button>
+          <Menu.Button className="justify-center">
+            <IoMenu className="w-[32px] h-[32px]" />
+          </Menu.Button>
         </div>
         <Transition
           as={Fragment}
