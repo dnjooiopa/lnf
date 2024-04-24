@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.7.19",
+    "date-fns": "^3.6.0",
     "js-cookie": "^3.0.5",
     "next": "14.2.2",
     "next-qrcode": "^2.5.1",

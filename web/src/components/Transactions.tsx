@@ -1,6 +1,7 @@
 'use client'
 
 import { FC, useEffect, useState } from 'react'
+import { format } from 'date-fns'
 
 import useIsMounted from '@/hooks/useIsMounted'
 import { TransactionType } from '@/enums'
@@ -21,10 +22,8 @@ interface Transaction {
 }
 
 const formatDateTime = (ts: number) => {
-  const date = new Date(ts)
-  return `${date.getFullYear()}-${
-    date.getMonth() + 1
-  }-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
+  const f = 'yyyy-MM-dd HH:mm:ss'
+  return format(new Date(ts), f)
 }
 
 const Tx = ({ amountSat, description, createdAt, type }: Transaction) => {
