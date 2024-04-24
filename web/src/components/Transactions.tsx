@@ -82,7 +82,7 @@ const Transactions: FC<{}> = () => {
   }, [isMounted])
 
   return (
-    <div className="px-12 py-4">
+    <div>
       {payments.map((tx, i) => (
         <Tx key={i} {...tx} />
       ))}

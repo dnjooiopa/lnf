@@ -6,7 +6,7 @@ const Layout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
     <Providers>
       <div className="p-4">
         <MenuDropdown />
-        <main className="mt-16 max-w-md mx-auto text-center">{children}</main>
+        <main className="mt-16 px-8 max-w-md mx-auto text-center">{children}</main>
       </div>
     </Providers>
   )

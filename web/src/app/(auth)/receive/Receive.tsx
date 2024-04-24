@@ -65,7 +65,7 @@ const Receive: FC<{}> = () => {
       {invoice && (
         <div className="flex flex-col">
           <div className="mx-auto mt-6">
-            <QRCanvas text={invoice} />
+            <QRCanvas text={invoice} options={{ width: 256 }} />
           </div>
           <p className="mt-2 break-words">{invoice}</p>
         </div>
