@@ -9,7 +9,9 @@ const Receive: FC<{}> = () => {
   const [amountSat, setAmountSat] = useState<number>(0)
   const [description, setDescription] = useState<string>('')
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [invoice, setInvoice] = useState<string>('')
+  const [invoice, setInvoice] = useState<string>(
+    'lnbc3210n1pnz3egppp5qvzujpneuemvkh5ywnaulv2x95n2f5aqlg47wds7g5yg3uufj3nscqpjsp5rcwvjjd0977wqwzr7208qrl63qfs9c922zat0tdwcuef8jyaq98q9q7sqqqqqqqqqqqqqqqqqqqsqqqqqysgqdqqmqz9grzjqwryaup9lh50kkranzgcdnn2fgvx390wgj5jd07rwr3vxeje0glcllugk4rqx4vp7cqqqqlgqqqqqeqqjq5fpcdtelmjttkxcgrwcfxnu0j3mmnhw0j9gln249e7szrx255q6q7jzxqa4pr6q250d0suyww88ys40cyqee67g6d27vjkdpp2h28ksp5v0slp'
+  )
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -64,7 +66,7 @@ const Receive: FC<{}> = () => {
 
       {invoice && (
         <div className="flex flex-col">
-          <div className="mx-auto">
+          <div className="mx-auto mt-6">
             <QRCanvas text={invoice} />
           </div>
           <p className="mt-2 break-words">{invoice}</p>
