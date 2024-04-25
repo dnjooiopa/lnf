@@ -2,6 +2,8 @@
 
 import { FC, useState } from 'react'
 import { useQRCode } from 'next-qrcode'
+import { useCopyToClipboard } from 'usehooks-ts'
+import { FaCopy } from 'react-icons/fa'
 
 const Receive: FC<{}> = () => {
   const { Canvas: QRCanvas } = useQRCode()
@@ -10,6 +12,10 @@ const Receive: FC<{}> = () => {
   const [description, setDescription] = useState<string>('')
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [invoice, setInvoice] = useState<string>('')
+  const [copied, setCopied] = useState<boolean>(false)
+  const [openInvoice, setOpenInvoice] = useState<boolean>(false)
+
+  const [_, copy] = useCopyToClipboard()
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -64,10 +70,38 @@ const Receive: FC<{}> = () => {
 
       {invoice && (
         <div className="flex flex-col">
-          <div className="mx-auto mt-6">
+          <div className="mx-auto mt-4">
             <QRCanvas text={invoice} options={{ width: 256 }} />
           </div>
-          <p className="mt-2 break-words">{invoice}</p>
+
+          <div className="mt-3 mx-auto">
+            {!copied ? (
+              <button
+                className="flex gap-1 rounded bg-gray-700 p-2 items-center"
+                onClick={() => {
+                  setCopied(true)
+                  setTimeout(() => setCopied(false), 2000)
+                  copy(invoice)
+                }}
+              >
+                <FaCopy className="cursor-pointer w-[32px] h-[32px]" />
+                <span>Copy</span>
+              </button>
+            ) : (
+              <p>Copied</p>
+            )}
+          </div>
+
+          <button
+            className="mt-3 p-2 rounded bg-gray-700"
+            onClick={() => {
+              setOpenInvoice(!openInvoice)
+            }}
+          >
+            {openInvoice ? 'Hide invoice' : 'Show invoice'}
+          </button>
+
+          {openInvoice && <p className="mt-1 break-words">{invoice}</p>}
         </div>
       )}
     </div>
