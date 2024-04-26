@@ -186,3 +186,72 @@ func ListAllTransactions(ctx context.Context) ([]*Transaction, error) {
 	}
 	return txs, nil
 }
+
+func ListTransactions(ctx context.Context, p *ListTransactionsParams) ([]*Transaction, int, error) {
+	rows, err := dbctx.QueryContext(
+		ctx, `
+		SELECT
+			payment_hash,
+			type,
+			payment_id,
+			amount_sat,
+			fees,
+			external_id,
+			description,
+			invoice,
+			is_paid,
+			preimage,
+			completed_at,
+			created_at
+		FROM transactions
+		WHERE created_at >= ? AND created_at <= ? AND is_paid = true
+		ORDER BY created_at DESC
+		LIMIT ? OFFSET ?`,
+		p.From,
+		p.To,
+		p.Limit,
+		p.Offset,
+	)
+	if err != nil {
+		return nil, 0, err
+	}
+	defer rows.Close()
+
+	var txs []*Transaction
+	for rows.Next() {
+		var tx Transaction
+		err := rows.Scan(
+			&tx.PaymentHash,
+			&tx.Type,
+			&tx.PaymentID,
+			&tx.AmountSat,
+			&tx.Fees,
+			&tx.ExternalID,
+			&tx.Description,
+			&tx.Invoice,
+			&tx.IsPaid,
+			&tx.Preimage,
+			&tx.CompletedAt,
+			&tx.CreatedAt,
+		)
+		if err != nil {
+			return nil, 0, err
+		}
+		txs = append(txs, &tx)
+	}
+
+	var total int
+	err = dbctx.QueryRowContext(
+		ctx, `
+		SELECT COUNT(*)
+		FROM transactions
+		WHERE created_at >= ? AND created_at <= ? AND is_paid = true`,
+		p.From,
+		p.To,
+	).Scan(&total)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return txs, total, nil
+}

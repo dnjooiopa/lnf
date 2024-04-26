@@ -311,13 +311,41 @@ func (c *PhoenixClient) Webhook(ctx context.Context, p *WebhookParams) error {
 	return nil
 }
 
-func (c *PhoenixClient) ListTransactions(ctx context.Context) ([]*Transaction, error) {
-	txs, err := ListAllTransactions(ctx)
+type ListTransactionsParams struct {
+	Offset int       `json:"offset"`
+	Limit  int       `json:"limit"`
+	From   time.Time `json:"from"`
+	To     time.Time `json:"to"`
+}
+
+type ListTransactionsResult struct {
+	Total int            `json:"total"`
+	Txs   []*Transaction `json:"txs"`
+}
+
+func (c *PhoenixClient) ListTransactions(ctx context.Context, p *ListTransactionsParams) (*ListTransactionsResult, error) {
+	if p.Offset < 0 {
+		p.Offset = 0
+	}
+	if p.Limit <= 5 {
+		p.Limit = 5
+	}
+	if p.From.IsZero() {
+		p.From = time.Now().AddDate(-1, 0, 0)
+	}
+	if p.To.IsZero() {
+		p.To = time.Now()
+	}
+
+	txs, total, err := ListTransactions(ctx, p)
 	if err != nil {
 		return nil, err
 	}
 
-	return txs, nil
+	return &ListTransactionsResult{
+		Total: total,
+		Txs:   txs,
+	}, nil
 }
 
 func (c *PhoenixClient) RegisterLineNotify(token string) {

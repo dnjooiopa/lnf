@@ -51,19 +51,22 @@ const Tx = ({ amountSat, description, createdAt, type }: Transaction) => {
 const Transactions: FC<{}> = () => {
   const isMounted = useIsMounted()
   const [payments, setPayments] = useState<Transaction[]>([])
+  const [limit, setLimit] = useState(5)
 
   const listIncomingPayments = async () => {
     try {
       const res = await fetch('/api/lnf.listtransactions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({}),
+        body: JSON.stringify({
+          limit,
+        }),
       })
       const data = await res.json()
 
       // TODO: handle error
 
-      let ps = data.result as Transaction[]
+      let ps = data.result.txs as Transaction[]
 
       ps = ps.filter(({ isPaid }) => isPaid)
 
