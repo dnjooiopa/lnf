@@ -15,3 +15,8 @@ export enum TransactionType {
   PAYMENT_RECEIVED = 'payment_received',
   PAYMENT_SENT = 'payment_sent',
 }
+
+export enum EventType {
+  PAYMENT_RECEIVED = 'payment_received',
+  PAYMENT_SENT = 'payment_sent',
+}
