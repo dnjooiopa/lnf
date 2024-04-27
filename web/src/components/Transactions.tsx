@@ -1,6 +1,7 @@
 'use client'
 
 import { FC, useEffect, useMemo, useState } from 'react'
+import { RiSendPlaneFill } from 'react-icons/ri'
 
 import useIsMounted from '@/hooks/useIsMounted'
 import Axios from '@/libs/axios'
@@ -11,16 +12,24 @@ import { shortenTime } from '@/utils/date'
 const TxItem = ({ amountSat, description, createdAt, type }: Transaction) => {
   const amountColor = type === TransactionType.PAYMENT_SENT ? 'text-gray-100' : 'text-green-500'
   const displayAmount = type === TransactionType.PAYMENT_SENT ? `-${amountSat}` : `+${amountSat}`
-  const displayDescription = description || (type === TransactionType.PAYMENT_SENT ? 'Sent' : 'Received')
+  // const displayDescription = description || (type === TransactionType.PAYMENT_SENT ? 'Sent' : 'Received')
+
+  const txIcon = useMemo(
+    () =>
+      type === TransactionType.PAYMENT_SENT ? (
+        <RiSendPlaneFill className={`text-2xl ${amountColor}`} />
+      ) : (
+        <RiSendPlaneFill className={`text-2xl ${amountColor} rotate-90`} />
+      ),
+    [type]
+  )
 
   return (
-    <div className="flex justify-between mt-3">
-      <div className="flex flex-col items-start">
+    <div className="flex justify-between mt-3 py-1">
+      <div className="flex gap-2 items-start">
+        <div>{txIcon}</div>
         <div>
-          <span className="text-lg">{displayDescription}</span>
-        </div>
-        <div>
-          <span className="text-sm">{shortenTime(new Date(createdAt))}</span>
+          <span className="text-md">{shortenTime(new Date(createdAt))}</span>
         </div>
       </div>
       <div>
