@@ -219,6 +219,19 @@ func (c *PhoenixClient) PayInvoice(ctx context.Context, p *PayInvoiceParams) (*P
 		return nil, err
 	}
 
+	go func() {
+		b, err := json.Marshal(EventMessage{
+			Type: TransactionTypeSent,
+			Data: result,
+		})
+		if err != nil {
+			log.Println("[ERR] failed to marshal pay invoice params", err)
+			return
+		}
+
+		eventHub.SendMessage(b)
+	}()
+
 	return &result, nil
 }
 
