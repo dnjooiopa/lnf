@@ -13,7 +13,7 @@ const formatDateTime = (ts: number) => {
   return format(new Date(ts), f)
 }
 
-const Tx = ({ amountSat, description, createdAt, type }: Transaction) => {
+const TxItem = ({ amountSat, description, createdAt, type }: Transaction) => {
   const amountColor = type === TransactionType.PAYMENT_SENT ? 'text-gray-100' : 'text-green-500'
   const displayAmount = type === TransactionType.PAYMENT_SENT ? `-${amountSat}` : `+${amountSat}`
   const displayDescription = description || (type === TransactionType.PAYMENT_SENT ? 'Sent' : 'Received')
@@ -73,7 +73,7 @@ const Transactions: FC<{}> = () => {
   return (
     <div>
       {payments.map((tx, i) => (
-        <Tx key={i} {...tx} />
+        <TxItem key={i} {...tx} />
       ))}
 
       {hasNext && (
