@@ -2,13 +2,20 @@
 
 import { FC, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { QrReader } from 'react-qr-reader'
 
 import { LnFService } from '@/services/lnf'
+
+const validInvoice = (invoice: string): boolean => {
+  const invoiceRegex = /^lnbc[a-zA-Z0-9]{200,}$/
+  return invoiceRegex.test(invoice)
+}
 
 const Send: FC<{}> = () => {
   const { push } = useRouter()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [invoice, setInvoice] = useState<string>('')
+  const [openQRScan, setOpenQRScan] = useState<boolean>(false)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -47,6 +54,43 @@ const Send: FC<{}> = () => {
           Send
         </button>
       </form>
+
+      <button
+        className="mt-2 w-full p-3 rounded bg-gray-700"
+        onClick={() => {
+          setOpenQRScan((prev) => !prev)
+        }}
+      >
+        {openQRScan ? 'Close QR Scanner' : 'Open QR Scanner'}
+      </button>
+
+      {openQRScan && (
+        <QrReader
+          constraints={{
+            facingMode: 'environment',
+            width: { max: 2000, min: 480 },
+          }}
+          className="w-full"
+          scanDelay={250}
+          onResult={(result, error) => {
+            if (!!result) {
+              let inv = result?.getText()
+              if (!inv) return
+
+              inv = inv.trim()
+              inv = inv.toLowerCase().trim()
+              if (!validInvoice(inv)) return
+
+              setInvoice(inv)
+              setOpenQRScan(false)
+            }
+
+            if (!!error) {
+              console.log(error)
+            }
+          }}
+        />
+      )}
 
       {isLoading && <p>Loading...</p>}
     </div>
