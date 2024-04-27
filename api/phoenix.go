@@ -232,6 +232,13 @@ func (c *PhoenixClient) PayInvoice(ctx context.Context, p *PayInvoiceParams) (*P
 		eventHub.SendMessage(b)
 	}()
 
+	if c.lineNotifyToken != "" {
+		message := "Payment sent: " + strconv.Itoa(result.RecipientAmountSat) + " sats"
+		if err := SendLineNotify(c.lineNotifyToken, message); err != nil {
+			log.Println("[ERR] failed to send line notify", err)
+		}
+	}
+
 	return &result, nil
 }
 
