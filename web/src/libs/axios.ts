@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from 'axios'
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
 import Cookies from 'js-cookie'
 
 import { ErrorCode } from '@/enums'
@@ -37,9 +37,9 @@ ax.interceptors.response.use(
 )
 
 export default class Axios {
-  static async post(path: string, data: any): Promise<any> {
+  static async post(path: string, data: any, config?: AxiosRequestConfig): Promise<any> {
     try {
-      const res = await ax.post(path, data, {})
+      const res = await ax.post(path, data, config)
       if (res.data.error) {
         return Promise.reject(res.data.error)
       }

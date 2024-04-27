@@ -4,7 +4,7 @@ import { FC, useEffect, useState } from 'react'
 
 import { BalanceUnit } from '@/enums'
 import useIsMounted from '@/hooks/useIsMounted'
-import Axios from '@/libs/axios'
+import { LnFService } from '@/services/lnf'
 
 interface IBalanceProps {
   unit: BalanceUnit
@@ -17,7 +17,7 @@ const Balance: FC<IBalanceProps> = ({ unit }) => {
 
   const fetchBalance = async () => {
     try {
-      const { balanceSat } = await Axios.post('/lnf.getbalance', {})
+      const { balanceSat } = await LnFService.getBalance()
 
       setBalanceSat(balanceSat)
       setIsLoading(false)

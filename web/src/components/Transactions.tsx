@@ -4,10 +4,10 @@ import { FC, useEffect, useMemo, useState } from 'react'
 import { RiSendPlaneFill } from 'react-icons/ri'
 
 import useIsMounted from '@/hooks/useIsMounted'
-import Axios from '@/libs/axios'
-import { Transaction } from '@/types'
+import { Transaction } from '@/types/lnf'
 import { TransactionType } from '@/enums'
 import { shortenTime } from '@/utils/date'
+import { LnFService } from '@/services/lnf'
 
 const TxItem = ({ amountSat, description, createdAt, type }: Transaction) => {
   const amountColor = type === TransactionType.PAYMENT_SENT ? 'text-gray-100' : 'text-green-500'
@@ -52,7 +52,7 @@ const Transactions: FC<{}> = () => {
     setIsLoading(true)
 
     try {
-      const { txs, total } = await Axios.post('/lnf.listtransactions', { limit: txLimit })
+      const { txs, total } = await LnFService.listTransactions({ limit: txLimit })
 
       setTransactions([...txs])
       setTotal(total)

@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { FC, useState } from 'react'
 
-import Axios from '@/libs/axios'
+import { AuthService } from '@/services/auth'
 
 const Login: FC<{}> = () => {
   const { replace } = useRouter()
@@ -13,7 +13,7 @@ const Login: FC<{}> = () => {
     e.preventDefault()
 
     try {
-      await Axios.post('/auth/login', { pin })
+      await AuthService.login({ pin })
       replace('/')
     } catch (e) {}
   }

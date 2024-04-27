@@ -2,14 +2,14 @@
 
 import { useRouter } from 'next/navigation'
 
-import Axios from '@/libs/axios'
+import { AuthService } from '@/services/auth'
 
 const LogoutButton = () => {
   const { push } = useRouter()
 
   const handleLogout = async () => {
     try {
-      await Axios.post('/auth/logout', {})
+      await AuthService.logout()
       push('/login')
     } catch (err) {}
   }

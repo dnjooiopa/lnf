@@ -5,7 +5,7 @@ import { useQRCode } from 'next-qrcode'
 import { useCopyToClipboard } from 'usehooks-ts'
 import { FaCopy } from 'react-icons/fa'
 
-import Axios from '@/libs/axios'
+import { LnFService } from '@/services/lnf'
 
 const Receive: FC<{}> = () => {
   const { Canvas: QRCanvas } = useQRCode()
@@ -29,7 +29,7 @@ const Receive: FC<{}> = () => {
     setIsLoading(true)
 
     try {
-      const { serialized } = await Axios.post('/lnf.createinvoice', { amountSat, description })
+      const { serialized } = await LnFService.createInvoice({ amountSat, description })
       setInvoice(serialized)
     } catch (err) {
       console.error(err)

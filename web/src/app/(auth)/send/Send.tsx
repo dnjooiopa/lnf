@@ -3,7 +3,7 @@
 import { FC, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-import Axios from '@/libs/axios'
+import { LnFService } from '@/services/lnf'
 
 const Send: FC<{}> = () => {
   const { push } = useRouter()
@@ -20,7 +20,7 @@ const Send: FC<{}> = () => {
     setIsLoading(true)
 
     try {
-      await Axios.post('/lnf.payinvoice', { invoice })
+      await LnFService.payInvoice({ invoice })
       alert('Payment sent')
       push('/')
     } catch (err) {
