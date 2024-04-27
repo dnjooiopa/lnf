@@ -34,6 +34,13 @@ const Providers: FC<PropsWithChildren> = ({ children }) => {
             autoClose: toastAutoCloseMills,
           })
           break
+        case EventType.PAYMENT_SENT:
+          const data2 = event.data as Transaction
+          const msg2 = `Sent ${data2.amountSat} sats`
+          toast.success(msg2, {
+            autoClose: toastAutoCloseMills,
+          })
+          break
       }
     }
 
