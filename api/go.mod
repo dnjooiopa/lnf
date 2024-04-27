@@ -4,6 +4,7 @@ go 1.22.2
 
 require (
 	github.com/acoshift/arpc/v2 v2.1.5
+	github.com/aidarkhanov/nanoid/v2 v2.0.5
 	github.com/dnjooiopa/configfile v0.0.0-20240213020751-a2d9fa8181e2
 	github.com/mattn/go-sqlite3 v1.14.22
 	github.com/moonrhythm/httpmux v1.2.0

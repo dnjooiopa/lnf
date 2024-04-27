@@ -300,6 +300,19 @@ func (c *PhoenixClient) Webhook(ctx context.Context, p *WebhookParams) error {
 		return err
 	}
 
+	go func() {
+		b, err := json.Marshal(EventMessage{
+			Type: TransactionTypeReceived,
+			Data: tx,
+		})
+		if err != nil {
+			log.Println("[ERR] failed to marshal webhook params", err)
+			return
+		}
+
+		eventHub.SendMessage(b)
+	}()
+
 	if c.lineNotifyToken != "" {
 		message := "Payment received: " + strconv.Itoa(p.AmountSat) + " sats"
 		if err := SendLineNotify(c.lineNotifyToken, message); err != nil {

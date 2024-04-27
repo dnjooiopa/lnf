@@ -1,6 +1,7 @@
 package main
 
 import (
+	"net/http"
 	"strings"
 
 	"github.com/acoshift/arpc/v2"
@@ -24,6 +25,8 @@ func MountHandler(m *httpmux.Mux, am *arpc.Manager, pc *PhoenixClient) {
 		m.Handle("/lnf.payinvoice", am.Handler(pc.PayInvoice))
 		m.Handle("/lnf.listincomingpayments", am.Handler(pc.ListIncomingPayments))
 		m.Handle("/lnf.listtransactions", am.Handler(pc.ListTransactions))
+
+		m.Handle("/event.subscribe", http.HandlerFunc(SubscribeEvent))
 	}
 }
 

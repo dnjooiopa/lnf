@@ -1,5 +1,7 @@
 github.com/acoshift/arpc/v2 v2.1.5 h1:YK+VZop41+nwvM6MPfjWd25h58vb2VbM96djR0NkGCg=
 github.com/acoshift/arpc/v2 v2.1.5/go.mod h1:1bdfjw4BcLrnSCZhsK1Nl/70nxYoCnhlDL1BXHM6GV4=
+github.com/aidarkhanov/nanoid/v2 v2.0.5 h1:HLx5RyDuvOZ6YxlhYTxSU8Il+q7xVKmXM62MfSxziN0=
+github.com/aidarkhanov/nanoid/v2 v2.0.5/go.mod h1:YF/U48D1yA3AoGGUdRrCV95J/KJBShvR9TyLqQwdtlI=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/dnjooiopa/configfile v0.0.0-20240213020751-a2d9fa8181e2 h1:p9H7SzrNerNkomUoOfVVQ67AI93yVP0F6OTC0EcdA9s=
