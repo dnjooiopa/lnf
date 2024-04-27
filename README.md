@@ -2,6 +2,12 @@
 
 ## Pre-Requisite
 
+Create docker network
+
+```sh
+docker network create lnf
+```
+
 Run `phoenixd` docker with network `lnf`
 
 ```sh

@@ -3,6 +3,8 @@
 import { FC, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
+import Axios from '@/libs/axios'
+
 const Send: FC<{}> = () => {
   const { push } = useRouter()
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -18,17 +20,10 @@ const Send: FC<{}> = () => {
     setIsLoading(true)
 
     try {
-      const res = await fetch('/api/lnf.payinvoice', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ invoice }),
-      })
-
-      const data = await res.json()
-
-      if (data?.error) {
+      const res = await Axios.post('/lnf.payinvoice', { invoice })
+      if (res?.error) {
         setIsLoading(false)
-        return alert(data.error.code)
+        return alert(res.error.code)
       }
 
       alert('Payment sent')

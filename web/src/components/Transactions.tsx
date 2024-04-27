@@ -5,6 +5,7 @@ import { format } from 'date-fns'
 
 import useIsMounted from '@/hooks/useIsMounted'
 import { TransactionType } from '@/enums'
+import Axios from '@/libs/axios'
 
 interface Transaction {
   paymentHash: string
@@ -55,22 +56,9 @@ const Transactions: FC<{}> = () => {
 
   const listIncomingPayments = async () => {
     try {
-      const res = await fetch('/api/lnf.listtransactions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          limit,
-        }),
-      })
-      const data = await res.json()
-
-      // TODO: handle error
-
-      let ps = data.result.txs as Transaction[]
-
-      ps = ps.filter(({ isPaid }) => isPaid)
-
-      setPayments(ps)
+      const res = await Axios.post('/lnf.listtransactions', { limit })
+      let txs = (res.result.txs as Transaction[]).filter(({ isPaid }) => isPaid)
+      setPayments(txs)
     } catch (e) {
       console.error('error:', e)
     }

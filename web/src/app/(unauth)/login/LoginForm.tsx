@@ -3,6 +3,8 @@
 import { useRouter } from 'next/navigation'
 import { FC, useState } from 'react'
 
+import Axios from '@/libs/axios'
+
 const Login: FC<{}> = () => {
   const { replace } = useRouter()
   const [pin, setPin] = useState('')
@@ -10,17 +12,8 @@ const Login: FC<{}> = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    const res = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ pin }),
-    })
-
-    const data = await res.json()
-
-    if (data?.error) {
-      return alert(data.error.code)
-    }
+    const res = await Axios.post('/auth/login', { pin })
+    if (res?.error) return alert(res.error.code)
 
     replace('/')
   }
