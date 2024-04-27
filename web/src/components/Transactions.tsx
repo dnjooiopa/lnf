@@ -1,26 +1,12 @@
 'use client'
 
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect, useMemo, useState } from 'react'
 import { format } from 'date-fns'
 
 import useIsMounted from '@/hooks/useIsMounted'
-import { TransactionType } from '@/enums'
 import Axios from '@/libs/axios'
-
-interface Transaction {
-  paymentHash: string
-  type: TransactionType
-  paymentID: string
-  amountSat: number
-  fees: number
-  externalID: string
-  description: string
-  invoice: string
-  isPaid: boolean
-  preimage: string
-  completedAt: number
-  createdAt: number
-}
+import { Transaction } from '@/types'
+import { TransactionType } from '@/enums'
 
 const formatDateTime = (ts: number) => {
   const f = 'yyyy-MM-dd HH:mm:ss'
@@ -51,23 +37,35 @@ const Tx = ({ amountSat, description, createdAt, type }: Transaction) => {
 
 const Transactions: FC<{}> = () => {
   const isMounted = useIsMounted()
+  const [isLoading, setIsLoading] = useState(false)
   const [payments, setPayments] = useState<Transaction[]>([])
   const [limit, setLimit] = useState(5)
+  const [total, setTotal] = useState(0)
 
-  const listIncomingPayments = async () => {
+  const hasNext = useMemo(() => payments.length < total, [payments, total])
+
+  const fetchTransactions = async (txLimit: number) => {
+    setIsLoading(true)
+
     try {
-      const res = await Axios.post('/lnf.listtransactions', { limit })
+      const res = await Axios.post('/lnf.listtransactions', { limit: txLimit })
+
       let txs = (res.result.txs as Transaction[]).filter(({ isPaid }) => isPaid)
-      setPayments(txs)
+
+      setPayments([...txs])
+      setTotal(res.result.total)
+      setLimit(txLimit)
     } catch (e) {
       console.error('error:', e)
     }
+
+    setIsLoading(false)
   }
 
   useEffect(() => {
     if (!isMounted) return
 
-    listIncomingPayments()
+    fetchTransactions(limit)
 
     return () => {}
   }, [isMounted])
@@ -77,6 +75,17 @@ const Transactions: FC<{}> = () => {
       {payments.map((tx, i) => (
         <Tx key={i} {...tx} />
       ))}
+
+      {hasNext && (
+        <button
+          className="mt-4 p-2 bg-gray-700 rounded"
+          onClick={() => {
+            fetchTransactions(limit + 5)
+          }}
+        >
+          {isLoading ? '...' : 'Load more'}
+        </button>
+      )}
     </div>
   )
 }
