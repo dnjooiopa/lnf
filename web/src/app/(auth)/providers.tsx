@@ -8,7 +8,7 @@ import { EventSourcePolyfill } from 'event-source-polyfill'
 
 import { EventType } from '@/enums'
 import { EventMessage } from '@/types'
-import { Transaction } from '@/types/lnf'
+import { PayInvoiceResult, Transaction } from '@/types/lnf'
 
 const toastAutoCloseMills = 10000 // 10 seconds
 
@@ -35,8 +35,8 @@ const Providers: FC<PropsWithChildren> = ({ children }) => {
           })
           break
         case EventType.PAYMENT_SENT:
-          const data2 = event.data as Transaction
-          const msg2 = `Sent ${data2.amountSat} sats`
+          const data2 = event.data as PayInvoiceResult
+          const msg2 = `Sent ${data2.recipientAmountSat} sats`
           toast.success(msg2, {
             autoClose: toastAutoCloseMills,
           })
