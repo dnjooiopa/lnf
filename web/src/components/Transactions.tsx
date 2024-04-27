@@ -1,17 +1,12 @@
 'use client'
 
 import { FC, useEffect, useMemo, useState } from 'react'
-import { format } from 'date-fns'
 
 import useIsMounted from '@/hooks/useIsMounted'
 import Axios from '@/libs/axios'
 import { Transaction } from '@/types'
 import { TransactionType } from '@/enums'
-
-const formatDateTime = (ts: number) => {
-  const f = 'yyyy-MM-dd HH:mm:ss'
-  return format(new Date(ts), f)
-}
+import { shortenTime } from '@/utils/date'
 
 const TxItem = ({ amountSat, description, createdAt, type }: Transaction) => {
   const amountColor = type === TransactionType.PAYMENT_SENT ? 'text-gray-100' : 'text-green-500'
@@ -25,7 +20,7 @@ const TxItem = ({ amountSat, description, createdAt, type }: Transaction) => {
           <span className="text-lg">{displayDescription}</span>
         </div>
         <div>
-          <span className="text-sm">{formatDateTime(createdAt)}</span>
+          <span className="text-sm">{shortenTime(new Date(createdAt))}</span>
         </div>
       </div>
       <div>
