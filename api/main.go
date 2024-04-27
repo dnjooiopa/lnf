@@ -48,6 +48,7 @@ func main() {
 	srv.Addr = ":8080"
 	srv.Handler = mux
 
+	srv.Use(Recovery())
 	srv.Use(parapet.MiddlewareFunc(dbctx.DBMiddleware(db)))
 
 	go StartBgWorker(ctx)
