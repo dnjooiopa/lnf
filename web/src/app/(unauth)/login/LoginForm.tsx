@@ -12,10 +12,10 @@ const Login: FC<{}> = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    const res = await Axios.post('/auth/login', { pin })
-    if (res?.error) return alert(res.error.code)
-
-    replace('/')
+    try {
+      await Axios.post('/auth/login', { pin })
+      replace('/')
+    } catch (e) {}
   }
 
   return (

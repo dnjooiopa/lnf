@@ -37,10 +37,13 @@ ax.interceptors.response.use(
 )
 
 export default class Axios {
-  static async post(path: string, data: any): Promise<IBaseResponse> {
+  static async post(path: string, data: any): Promise<any> {
     try {
       const res = await ax.post(path, data, {})
-      return res.data
+      if (res.data.error) {
+        return Promise.reject(res.data.error)
+      }
+      return Promise.resolve(res.data.result)
     } catch (e) {
       return Promise.reject(e)
     }

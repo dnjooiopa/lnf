@@ -29,13 +29,8 @@ const Receive: FC<{}> = () => {
     setIsLoading(true)
 
     try {
-      const res = await Axios.post('/lnf.createinvoice', { amountSat, description })
-      if (res?.error) {
-        setIsLoading(false)
-        return alert(res.error.code)
-      }
-
-      setInvoice(res.result.serialized)
+      const { serialized } = await Axios.post('/lnf.createinvoice', { amountSat, description })
+      setInvoice(serialized)
     } catch (err) {
       console.error(err)
     }

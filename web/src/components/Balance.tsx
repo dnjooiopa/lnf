@@ -17,8 +17,8 @@ const Balance: FC<IBalanceProps> = ({ unit }) => {
 
   const fetchBalance = async () => {
     try {
-      const res = await Axios.post('/lnf.getbalance', {})
-      const { balanceSat } = res.result
+      const { balanceSat } = await Axios.post('/lnf.getbalance', {})
+
       setBalanceSat(balanceSat)
       setIsLoading(false)
     } catch (e) {

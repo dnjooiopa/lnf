@@ -9,8 +9,8 @@ const LogoutButton = () => {
 
   const handleLogout = async () => {
     try {
-      const res = await Axios.post('/auth/logout', {})
-      if (res?.ok) push('/login')
+      await Axios.post('/auth/logout', {})
+      push('/login')
     } catch (err) {}
   }
 

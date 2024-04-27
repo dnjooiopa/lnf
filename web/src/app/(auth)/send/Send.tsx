@@ -20,12 +20,7 @@ const Send: FC<{}> = () => {
     setIsLoading(true)
 
     try {
-      const res = await Axios.post('/lnf.payinvoice', { invoice })
-      if (res?.error) {
-        setIsLoading(false)
-        return alert(res.error.code)
-      }
-
+      await Axios.post('/lnf.payinvoice', { invoice })
       alert('Payment sent')
       push('/')
     } catch (err) {

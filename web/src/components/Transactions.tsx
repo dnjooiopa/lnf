@@ -42,22 +42,20 @@ const TxItem = ({ amountSat, description, createdAt, type }: Transaction) => {
 const Transactions: FC<{}> = () => {
   const isMounted = useIsMounted()
   const [isLoading, setIsLoading] = useState(false)
-  const [payments, setPayments] = useState<Transaction[]>([])
+  const [transactions, setTransactions] = useState<Transaction[]>([])
   const [limit, setLimit] = useState(5)
   const [total, setTotal] = useState(0)
 
-  const hasNext = useMemo(() => payments.length < total, [payments, total])
+  const hasNext = useMemo(() => transactions.length < total, [transactions, total])
 
   const fetchTransactions = async (txLimit: number) => {
     setIsLoading(true)
 
     try {
-      const res = await Axios.post('/lnf.listtransactions', { limit: txLimit })
+      const { txs, total } = await Axios.post('/lnf.listtransactions', { limit: txLimit })
 
-      let txs = (res.result.txs as Transaction[]).filter(({ isPaid }) => isPaid)
-
-      setPayments([...txs])
-      setTotal(res.result.total)
+      setTransactions([...txs])
+      setTotal(total)
       setLimit(txLimit)
     } catch (e) {
       console.error('error:', e)
@@ -76,7 +74,7 @@ const Transactions: FC<{}> = () => {
 
   return (
     <div>
-      {payments.map((tx, i) => (
+      {transactions.map((tx, i) => (
         <TxItem key={i} {...tx} />
       ))}
 
