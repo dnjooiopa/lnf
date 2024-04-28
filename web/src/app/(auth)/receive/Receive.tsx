@@ -52,11 +52,9 @@ const Receive: FC<{}> = () => {
           onChange={(e) => setAmountSat(parseInt(e.target.value))}
         />
         <button className="w-full h-[48px] p-3 rounded bg-gray-700" type="submit">
-          Create invoice
+          {isLoading ? 'Loading...' : 'Create invoice'}
         </button>
       </form>
-
-      {isLoading && <p>Loading...</p>}
 
       {invoice && (
         <div className="flex flex-col">
