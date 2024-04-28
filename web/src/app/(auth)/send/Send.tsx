@@ -6,6 +6,7 @@ import { RiQrScan2Line, RiSendPlaneFill } from 'react-icons/ri'
 
 import { LnFService } from '@/services/lnf'
 import QrScanModal from './QrScanModal'
+import { validInvoice } from '@/utils/invoice'
 
 const Send: FC<{}> = () => {
   const { push } = useRouter()
@@ -16,7 +17,7 @@ const Send: FC<{}> = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    if (!invoice) {
+    if (!validInvoice(invoice)) {
       return alert('Invalid invoice')
     }
 

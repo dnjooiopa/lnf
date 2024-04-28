@@ -2,10 +2,7 @@ import { FC, Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { QrReader } from 'react-qr-reader'
 
-const validInvoice = (invoice: string): boolean => {
-  const invoiceRegex = /^lnbc[a-zA-Z0-9]{200,}$/
-  return invoiceRegex.test(invoice)
-}
+import { validInvoice } from '@/utils/invoice'
 
 interface IQrScanProps {
   closeModal: () => void
