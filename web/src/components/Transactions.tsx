@@ -85,7 +85,7 @@ const Transactions: FC<{}> = () => {
             fetchTransactions(limit + 5)
           }}
         >
-          {isLoading ? '...' : 'Load more'}
+          {isLoading ? 'Loading...' : 'Load more'}
         </button>
       )}
     </div>
