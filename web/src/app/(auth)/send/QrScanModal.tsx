@@ -56,9 +56,6 @@ const QrScan: FC<IQrScanProps> = ({ closeModal, setInvoice }) => {
                     }}
                     className="w-full"
                     scanDelay={250}
-                    ViewFinder={(props: any) => {
-                      return <div>This is overlay</div>
-                    }}
                     onResult={(result, error) => {
                       if (!!result) {
                         let inv = result?.getText()
