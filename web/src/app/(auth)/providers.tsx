@@ -24,7 +24,6 @@ const Providers: FC<PropsWithChildren> = ({ children }) => {
     const source = new EventSourcePolyfill(`/api/event.subscribe`)
 
     source.onmessage = (e) => {
-      console.log('event:', e)
       const event = JSON.parse(e.data) as EventMessage
       switch (event?.type) {
         case EventType.PAYMENT_RECEIVED:
