@@ -17,9 +17,10 @@ const Send: FC<{}> = () => {
   const [isPaymentSuccess, setIsPaymentSuccess] = useState<boolean>(false)
 
   const clearResult = () => {
-    setInvoice('')
-    setIsPaymentSuccess(false)
     setIsLoading(false)
+    setInvoice('')
+    setIsOpenQRScan(false)
+    setIsPaymentSuccess(false)
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -98,7 +99,7 @@ const Send: FC<{}> = () => {
         <div
           className="flex flex-col items-center"
           onClick={() => {
-            setIsPaymentSuccess(false)
+            clearResult()
           }}
         >
           <div className="flex flex-col items-center mt-4 w-full h-full">
