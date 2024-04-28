@@ -21,6 +21,9 @@ const Providers: FC<PropsWithChildren> = ({ children }) => {
       push('/login')
     }
 
+    // NOTE: disable event source for now
+    return
+
     const source = new EventSourcePolyfill(`/api/event.subscribe`)
 
     source.onmessage = (e) => {
