@@ -1,4 +1,16 @@
+import b11 from 'bolt11'
+
 export const validInvoice = (invoice: string): boolean => {
-  const invoiceRegex = /^lnbc[a-zA-Z0-9]{200,}$/
-  return invoiceRegex.test(invoice)
+  try {
+    const decoded = decodeInvoice(invoice)
+    return !!decoded?.complete
+  } catch (e) {
+    return false
+  }
+}
+
+export const decodeInvoice = (invoice: string) => {
+  try {
+    return b11.decode(invoice)
+  } catch (e) {}
 }

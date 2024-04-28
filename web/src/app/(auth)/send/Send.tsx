@@ -1,20 +1,22 @@
 'use client'
 
 import { Transition } from '@headlessui/react'
-import { FC, Fragment, useState } from 'react'
+import { FC, Fragment, useEffect, useMemo, useState } from 'react'
 import { FaRegCheckCircle } from 'react-icons/fa'
-import { RiQrScan2Line, RiSendPlaneFill } from 'react-icons/ri'
+import { RiErrorWarningFill, RiQrScan2Line, RiSendPlaneFill } from 'react-icons/ri'
 import { toast } from 'react-toastify'
 
 import { LnFService } from '@/services/lnf'
-import { validInvoice } from '@/utils/invoice'
+import { decodeInvoice, validInvoice } from '@/utils/invoice'
 import QrScanModal from './QrScanModal'
 
 const Send: FC<{}> = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [invoice, setInvoice] = useState<string>('')
+  const [amountSat, setAmountSat] = useState<number>(0)
   const [isOpenQRScan, setIsOpenQRScan] = useState<boolean>(false)
   const [isPaymentSuccess, setIsPaymentSuccess] = useState<boolean>(false)
+  const [isValidInvoice, setIsValidInvoice] = useState<boolean>(false)
 
   const clearResult = () => {
     setIsLoading(false)
@@ -47,6 +49,37 @@ const Send: FC<{}> = () => {
     setIsLoading(false)
   }
 
+  useEffect(() => {
+    const decoded = decodeInvoice(invoice)
+    if (!!decoded) {
+      setIsValidInvoice(true)
+      setAmountSat(decoded?.satoshis ?? 0)
+    } else {
+      setIsValidInvoice(false)
+      setAmountSat(0)
+    }
+  }, [invoice])
+
+  const sendBtnElem = useMemo(() => {
+    if (isLoading) return <span>Loading...</span>
+
+    if (!!invoice && !isValidInvoice) {
+      return (
+        <Fragment>
+          <RiErrorWarningFill className={`text-3xl text-gray-100`} />
+          <span>Invalid invoice</span>
+        </Fragment>
+      )
+    }
+
+    return (
+      <Fragment>
+        <RiSendPlaneFill className={`text-3xl text-gray-100`} />
+        <span>{!!amountSat ? `Send ${amountSat} sats` : 'Send'}</span>
+      </Fragment>
+    )
+  }, [invoice, isLoading, amountSat, isValidInvoice])
+
   return (
     <div className="mt-4">
       {!isPaymentSuccess && (
@@ -64,10 +97,10 @@ const Send: FC<{}> = () => {
             <div className="flex gap-2 w-full">
               <button
                 type="submit"
+                disabled={!invoice || isLoading || !isValidInvoice}
                 className="flex grow gap-1 items-center justify-center p-2 h-[48px] rounded bg-gray-700"
               >
-                <RiSendPlaneFill className={`text-3xl text-gray-100`} />
-                <span>{isLoading ? 'Loading...' : 'Send'}</span>
+                {sendBtnElem}
               </button>
               <button
                 type="button"
@@ -77,7 +110,7 @@ const Send: FC<{}> = () => {
                 }}
               >
                 <RiQrScan2Line className="text-3xl" />
-                <span>Scan</span>
+                <span className="max-md:hidden">Scan</span>
               </button>
             </div>
           </form>

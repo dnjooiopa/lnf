@@ -11,6 +11,7 @@
   "dependencies": {
     "@headlessui/react": "^1.7.19",
     "axios": "^1.6.8",
+    "bolt11": "^1.4.1",
     "date-fns": "^3.6.0",
     "event-source-polyfill": "^1.0.31",
     "js-cookie": "^3.0.5",
