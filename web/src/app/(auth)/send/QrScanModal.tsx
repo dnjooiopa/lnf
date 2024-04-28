@@ -39,7 +39,7 @@ const QrScan: FC<IQrScanProps> = ({ closeModal, setInvoice }) => {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="h-full w-full max-w-md transform overflow-hidden bg-gray-300 rounded p-2 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="h-auto max-h-[500px] w-full max-w-md transform overflow-hidden bg-gray-300 rounded p-2 text-left align-middle shadow-xl transition-all">
                   <QrReader
                     constraints={{
                       facingMode: 'environment',
@@ -68,10 +68,10 @@ const QrScan: FC<IQrScanProps> = ({ closeModal, setInvoice }) => {
                     }}
                   />
 
-                  <div className="float-right mt-1">
+                  <div className="mt-auto w-full">
                     <button
                       type="button"
-                      className="flex items-center py-2 px-6 rounded bg-gray-700"
+                      className="flex items-center justify-center py-2 w-full rounded bg-gray-700"
                       onClick={closeModal}
                     >
                       Cancel
