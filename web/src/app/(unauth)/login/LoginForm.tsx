@@ -34,7 +34,7 @@ const Login: FC<{}> = () => {
   }
 
   return (
-    <form className="mt-20 w-full max-w-[400px] px-6" onSubmit={handleSubmit}>
+    <form className="mt-40 w-full max-w-[400px] px-6" onSubmit={handleSubmit}>
       <input
         className="p-3 w-full rounded border border-gray-700 bg-inherit"
         placeholder="Enter your pin"
@@ -43,7 +43,7 @@ const Login: FC<{}> = () => {
         onChange={(e) => setPin(e.target.value)}
         autoFocus
       />
-      <button className="py-2 rounded w-full mt-2 bg-gray-700" type="submit">
+      <button className="py-2 rounded w-full h-[48px] mt-2 bg-gray-700" type="submit">
         {isLoading ? 'Loading...' : 'Login'}
       </button>
     </form>
