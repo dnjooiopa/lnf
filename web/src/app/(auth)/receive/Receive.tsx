@@ -51,7 +51,7 @@ const Receive: FC<{}> = () => {
           autoFocus
           onChange={(e) => setAmountSat(parseInt(e.target.value))}
         />
-        <button className="w-full p-3 rounded bg-gray-700" type="submit">
+        <button className="w-full h-[48px] p-3 rounded bg-gray-700" type="submit">
           Create invoice
         </button>
       </form>
