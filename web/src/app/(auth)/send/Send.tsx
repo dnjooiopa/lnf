@@ -24,7 +24,6 @@ const Send: FC<{}> = () => {
 
     try {
       await LnFService.payInvoice({ invoice })
-      alert('Payment sent')
       push('/')
     } catch (err) {
       console.error(err)
