@@ -10,7 +10,7 @@ const Page = ({}: IPageProps) => {
     <Fragment>
       <div className="flex items-start">
         <Link href="/">
-          <button className="py-1 px-2 rounded border border-gray-700">{`<-back`}</button>
+          <button className="py-1 border-gray-700 font-semibold hover:underline">{`<-Home`}</button>
         </Link>
       </div>
 
