@@ -2,20 +2,16 @@
 
 import { FC, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { QrReader } from 'react-qr-reader'
+import { RiQrScan2Line, RiSendPlaneFill } from 'react-icons/ri'
 
 import { LnFService } from '@/services/lnf'
-
-const validInvoice = (invoice: string): boolean => {
-  const invoiceRegex = /^lnbc[a-zA-Z0-9]{200,}$/
-  return invoiceRegex.test(invoice)
-}
+import QrScanModal from './QrScanModal'
 
 const Send: FC<{}> = () => {
   const { push } = useRouter()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [invoice, setInvoice] = useState<string>('')
-  const [openQRScan, setOpenQRScan] = useState<boolean>(false)
+  const [isOpenQRScan, setIsOpenQRScan] = useState<boolean>(false)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -50,47 +46,28 @@ const Send: FC<{}> = () => {
           autoFocus
           onChange={(e) => setInvoice(e.target.value)}
         />
-        <button className="w-full p-3 rounded bg-gray-700" type="submit">
-          Send
-        </button>
+        <div className="flex gap-2 w-full">
+          <button
+            type="submit"
+            className="flex grow gap-1 items-center justify-center p-2 h-[48px] rounded bg-gray-700"
+          >
+            <RiSendPlaneFill className={`text-3xl text-gray-100`} />
+            <span>Send</span>
+          </button>
+          <button
+            type="button"
+            className="flex items-center gap-1 justify-center py-2 px-6 rounded bg-gray-700"
+            onClick={() => {
+              setIsOpenQRScan((prev) => !prev)
+            }}
+          >
+            <RiQrScan2Line className="text-3xl" />
+            <span>Scan</span>
+          </button>
+        </div>
       </form>
 
-      <button
-        className="mt-2 w-full p-3 rounded bg-gray-700"
-        onClick={() => {
-          setOpenQRScan((prev) => !prev)
-        }}
-      >
-        {openQRScan ? 'Close QR Scanner' : 'Open QR Scanner'}
-      </button>
-
-      {openQRScan && (
-        <QrReader
-          constraints={{
-            facingMode: 'environment',
-            width: { max: 2000, min: 480 },
-          }}
-          className="w-full"
-          scanDelay={250}
-          onResult={(result, error) => {
-            if (!!result) {
-              let inv = result?.getText()
-              if (!inv) return
-
-              inv = inv.trim()
-              inv = inv.toLowerCase().trim()
-              if (!validInvoice(inv)) return
-
-              setInvoice(inv)
-              setOpenQRScan(false)
-            }
-
-            if (!!error) {
-              console.log(error)
-            }
-          }}
-        />
-      )}
+      {isOpenQRScan && <QrScanModal closeModal={() => setIsOpenQRScan(false)} setInvoice={setInvoice} />}
 
       {isLoading && <p>Loading...</p>}
     </div>
