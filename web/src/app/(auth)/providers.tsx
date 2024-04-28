@@ -3,7 +3,7 @@
 import { FC, Fragment, PropsWithChildren, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Cookies from 'js-cookie'
-import { toast, ToastContainer } from 'react-toastify'
+import { toast } from 'react-toastify'
 import { EventSourcePolyfill } from 'event-source-polyfill'
 
 import { EventType } from '@/enums'
@@ -54,12 +54,7 @@ const Providers: FC<PropsWithChildren> = ({ children }) => {
     }
   }, [token])
 
-  return (
-    <Fragment>
-      {children}
-      <ToastContainer />
-    </Fragment>
-  )
+  return <Fragment>{children}</Fragment>
 }
 
 export default Providers

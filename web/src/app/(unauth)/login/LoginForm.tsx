@@ -2,20 +2,35 @@
 
 import { useRouter } from 'next/navigation'
 import { FC, useState } from 'react'
+import { toast } from 'react-toastify'
 
 import { AuthService } from '@/services/auth'
+import { IBaseResponseError } from '@/types'
+import { ErrorCode } from '@/enums'
 
 const Login: FC<{}> = () => {
   const { replace } = useRouter()
   const [pin, setPin] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
+    setIsLoading(true)
+
     try {
       await AuthService.login({ pin })
       replace('/')
-    } catch (e) {}
+    } catch (e) {
+      const err = e as IBaseResponseError
+      if (err?.code === ErrorCode.INVALID_PIN) {
+        toast.error('Invalid pin', {
+          autoClose: 3000,
+        })
+      }
+    }
+
+    setIsLoading(false)
   }
 
   return (
@@ -29,7 +44,7 @@ const Login: FC<{}> = () => {
         autoFocus
       />
       <button className="py-2 rounded w-full mt-2 bg-gray-700" type="submit">
-        Login
+        {isLoading ? 'Loading...' : 'Login'}
       </button>
     </form>
   )

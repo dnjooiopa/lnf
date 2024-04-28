@@ -9,6 +9,7 @@ export enum ErrorCode {
   INTERNAL_SERVER_ERROR = 'INTERNAL_SERVER_ERROR',
   UNAUTHORIZED = 'UNAUTHORIZED',
   INVALID_TOKEN = 'INVALID_TOKEN',
+  INVALID_PIN = 'INVALID_PIN',
 }
 
 export enum TransactionType {
