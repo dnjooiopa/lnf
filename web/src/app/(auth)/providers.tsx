@@ -10,7 +10,7 @@ import { EventType } from '@/enums'
 import { EventMessage } from '@/types'
 import { PayInvoiceResult, Transaction } from '@/types/lnf'
 
-const toastAutoCloseMills = 10000 // 10 seconds
+const toastAutoCloseMills = 5000 // 5 seconds
 
 const Providers: FC<PropsWithChildren> = ({ children }) => {
   const token = Cookies.get('token')
