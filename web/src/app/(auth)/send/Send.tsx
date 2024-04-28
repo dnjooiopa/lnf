@@ -1,12 +1,13 @@
 'use client'
 
-import { FC, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { FC, useState } from 'react'
 import { RiQrScan2Line, RiSendPlaneFill } from 'react-icons/ri'
+import { toast } from 'react-toastify'
 
 import { LnFService } from '@/services/lnf'
-import QrScanModal from './QrScanModal'
 import { validInvoice } from '@/utils/invoice'
+import QrScanModal from './QrScanModal'
 
 const Send: FC<{}> = () => {
   const { push } = useRouter()
@@ -18,7 +19,9 @@ const Send: FC<{}> = () => {
     e.preventDefault()
 
     if (!validInvoice(invoice)) {
-      return alert('Invalid invoice')
+      return toast.error('Invalid invoice', {
+        autoClose: 2000,
+      })
     }
 
     setIsLoading(true)
