@@ -45,7 +45,7 @@ const QrScan: FC<IQrScanProps> = ({ closeModal, setInvoice }) => {
                       facingMode: 'environment',
                       width: { max: 2000, min: 480 },
                     }}
-                    className="w-full"
+                    className="w-full mb-2"
                     scanDelay={250}
                     onResult={(result, error) => {
                       if (!!result) {
