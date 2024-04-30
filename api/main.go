@@ -42,7 +42,9 @@ func main() {
 	pc := NewPhoenixClient(cfg.APIURL, cfg.APIKey)
 	pc.RegisterLineNotify(cfg.LineNotifyToken)
 
-	MountHandler(mux, am, pc)
+	pr := NewPrice(cfg.PriceAPIKey)
+
+	MountHandler(mux, am, pc, pr)
 
 	srv := parapet.NewBackend()
 	srv.Addr = ":8080"

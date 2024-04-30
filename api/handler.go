@@ -8,7 +8,7 @@ import (
 	"github.com/moonrhythm/httpmux"
 )
 
-func MountHandler(m *httpmux.Mux, am *arpc.Manager, pc *PhoenixClient) {
+func MountHandler(m *httpmux.Mux, am *arpc.Manager, pc *PhoenixClient, pr *Price) {
 	m.Handle("/auth.login", am.Handler(Login))
 	m.Handle("/auth.logout", am.Handler(Logout))
 	m.Handle("/lnf.webhook", am.Handler(pc.Webhook))
@@ -27,6 +27,8 @@ func MountHandler(m *httpmux.Mux, am *arpc.Manager, pc *PhoenixClient) {
 		m.Handle("/lnf.listtransactions", am.Handler(pc.ListTransactions))
 
 		m.Handle("/event.subscribe", http.HandlerFunc(SubscribeEvent))
+
+		m.Handle("/price.get", am.Handler(pr.GetPrice))
 	}
 }
 

@@ -12,6 +12,7 @@ type Config struct {
 	APIKey          string
 	PINs            []string
 	LineNotifyToken string
+	PriceAPIKey     string
 }
 
 func NewConfig() *Config {
@@ -25,5 +26,6 @@ func NewConfig() *Config {
 		APIKey:          c.String("API_KEY"),
 		PINs:            pins,
 		LineNotifyToken: c.String("LINE_NOTIFY_TOKEN"),
+		PriceAPIKey:     c.String("PRICE_API_KEY"),
 	}
 }
