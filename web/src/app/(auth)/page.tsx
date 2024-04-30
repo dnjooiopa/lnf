@@ -18,7 +18,7 @@ const Page = () => {
 
   return (
     <div className="mt-20">
-      <Balance unit={BalanceUnit.SATS} />
+      <Balance />
       <div className="flex mt-4 gap-4 justify-center">
         <Link href="/receive">
           <button className="w-[128px] rounded p-2 bg-gray-700">
