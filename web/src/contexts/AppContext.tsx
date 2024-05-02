@@ -7,14 +7,14 @@ import useIsMounted from '@/hooks/useIsMounted'
 import { BalanceUnit } from '@/enums'
 
 interface IAppContext {
-  displayBalance?: (amountSat: number, unit: BalanceUnit) => string
-  changeBalanceUnit: () => void
-  balanceUnit: BalanceUnit
+  displayAmount?: (amountSat: number, unit: BalanceUnit) => string
+  changeAmountUnit: () => void
+  amountUnit: BalanceUnit
 }
 
 export const AppContext = createContext<IAppContext>({
-  changeBalanceUnit: () => {},
-  balanceUnit: BalanceUnit.SATS,
+  changeAmountUnit: () => {},
+  amountUnit: BalanceUnit.SATS,
 })
 
 interface IAppContextProviderProps extends PropsWithChildren {}
@@ -43,7 +43,7 @@ export const AppContextProvider: FC<IAppContextProviderProps> = ({ children }) =
     fetchPrice()
   }, [isMounted])
 
-  const displayBalance = useCallback(
+  const displayAmount = useCallback(
     (amountSat: number, unit: BalanceUnit) => {
       switch (unit) {
         case BalanceUnit.SATS:
@@ -61,9 +61,9 @@ export const AppContextProvider: FC<IAppContextProviderProps> = ({ children }) =
     [priceTHB, priceUSD]
   )
 
-  const balanceUnit = useMemo(() => unitList[balanceUnitIdx], [balanceUnitIdx])
+  const amountUnit = useMemo(() => unitList[balanceUnitIdx], [balanceUnitIdx])
 
-  const changeBalanceUnit = useCallback(() => {
+  const changeAmountUnit = useCallback(() => {
     setBalanceUnitIdx((prev) => {
       return prev + 1 >= unitList.length ? 0 : prev + 1
     })
@@ -72,9 +72,9 @@ export const AppContextProvider: FC<IAppContextProviderProps> = ({ children }) =
   return (
     <AppContext.Provider
       value={{
-        displayBalance,
-        changeBalanceUnit,
-        balanceUnit,
+        displayAmount,
+        changeAmountUnit,
+        amountUnit,
       }}
     >
       {children}

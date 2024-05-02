@@ -11,16 +11,16 @@ import { LnFService } from '@/services/lnf'
 import { useAppContext } from '@/contexts/AppContext'
 
 const TxItem = ({ amountSat, description, createdAt, type }: Transaction) => {
-  const { displayBalance, balanceUnit } = useAppContext()
+  const { displayAmount, amountUnit } = useAppContext()
 
   const amountColor = type === TransactionType.PAYMENT_SENT ? 'text-gray-100' : 'text-green-500'
   // const displayDescription = description || (type === TransactionType.PAYMENT_SENT ? 'Sent' : 'Received')
 
-  const displayAmount = useMemo(() => {
-    if (!displayBalance) return '...'
-    const amt = displayBalance(amountSat, balanceUnit)
+  const displayAmt = useMemo(() => {
+    if (!displayAmount) return '...'
+    const amt = displayAmount(amountSat, amountUnit)
     return type === TransactionType.PAYMENT_SENT ? `-${amt}` : `+${amt}`
-  }, [displayBalance, amountSat, balanceUnit])
+  }, [displayAmount, amountSat, amountUnit])
 
   const txIcon = useMemo(
     () =>
@@ -42,7 +42,7 @@ const TxItem = ({ amountSat, description, createdAt, type }: Transaction) => {
       </div>
       <div>
         <span className={`text-lg ${amountColor}`}>
-          {displayAmount} {balanceUnit}
+          {displayAmt} {amountUnit}
         </span>
       </div>
     </div>
