@@ -9,7 +9,7 @@ import { useAppContext } from '@/contexts/AppContext'
 
 interface IBalanceProps {}
 
-const unitList = [BalanceUnit.SATS, BalanceUnit.THB, BalanceUnit.USD]
+const unitList = [BalanceUnit.SATS, BalanceUnit.THB]
 
 const HundredMillion = 100000000
 
