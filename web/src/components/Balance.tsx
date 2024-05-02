@@ -11,11 +11,9 @@ interface IBalanceProps {}
 
 const unitList = [BalanceUnit.SATS, BalanceUnit.THB]
 
-const HundredMillion = 100000000
-
 const Balance: FC<IBalanceProps> = ({}) => {
   const isMounted = useIsMounted()
-  const { priceTHB, priceUSD } = useAppContext()
+  const { displayBalance } = useAppContext()
   const [isLoading, setIsLoading] = useState(true)
   const [balanceSat, setBalanceSat] = useState(0)
   const [balanceUnitIdx, setBalanceUnitIdx] = useState(0)
@@ -41,21 +39,6 @@ const Balance: FC<IBalanceProps> = ({}) => {
 
   const unit = useMemo(() => unitList[balanceUnitIdx], [balanceUnitIdx])
 
-  const displayBalance = useMemo(() => {
-    switch (unit) {
-      case BalanceUnit.SATS:
-        return balanceSat
-      case BalanceUnit.THB:
-        const blTHB = (balanceSat * priceTHB) / HundredMillion
-        return balanceSat > 0 && blTHB <= 0 ? '...' : blTHB.toFixed(2)
-      case BalanceUnit.USD:
-        const blUSD = (balanceSat * priceUSD) / HundredMillion
-        return balanceSat > 0 && blUSD <= 0 ? '...' : blUSD.toFixed(2)
-      default:
-        return balanceSat
-    }
-  }, [balanceSat, unit])
-
   return (
     <div
       onClick={() => {
@@ -64,7 +47,7 @@ const Balance: FC<IBalanceProps> = ({}) => {
         })
       }}
     >
-      <h1 className="text-6xl">{isLoading ? '...' : displayBalance}</h1>
+      <h1 className="text-6xl">{isLoading || !displayBalance ? '...' : displayBalance(balanceSat, unit)}</h1>
       <p className="mt-2 text-lg">{unit}</p>
     </div>
   )

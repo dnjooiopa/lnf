@@ -1,19 +1,16 @@
 'use client'
 
-import { FC, PropsWithChildren, createContext, useContext, useEffect, useMemo, useState } from 'react'
+import { FC, PropsWithChildren, createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 
 import { PriceService } from '@/services/price'
 import useIsMounted from '@/hooks/useIsMounted'
+import { BalanceUnit } from '@/enums'
 
 interface IAppContext {
-  priceTHB: number
-  priceUSD: number
+  displayBalance?: (amountSat: number, unit: BalanceUnit) => string
 }
 
-export const AppContext = createContext<IAppContext>({
-  priceTHB: 0,
-  priceUSD: 0,
-})
+export const AppContext = createContext<IAppContext>({})
 
 interface IAppContextProviderProps extends PropsWithChildren {}
 
@@ -38,9 +35,33 @@ export const AppContextProvider: FC<IAppContextProviderProps> = ({ children }) =
     fetchPrice()
   }, [isMounted])
 
-  const value: IAppContext = useMemo(() => ({ priceTHB, priceUSD }), [priceTHB, priceUSD])
+  const displayBalance = useCallback(
+    (amountSat: number, unit: BalanceUnit) => {
+      switch (unit) {
+        case BalanceUnit.SATS:
+          return amountSat.toString()
+        case BalanceUnit.THB:
+          const blTHB = (amountSat * priceTHB) / 100000000
+          return amountSat > 0 && blTHB <= 0 ? '...' : blTHB.toFixed(2)
+        case BalanceUnit.USD:
+          const blUSD = (amountSat * priceUSD) / 100000000
+          return amountSat > 0 && blUSD <= 0 ? '...' : blUSD.toFixed(2)
+        default:
+          return amountSat.toString()
+      }
+    },
+    [priceTHB, priceUSD]
+  )
 
-  return <AppContext.Provider value={value}>{children}</AppContext.Provider>
+  return (
+    <AppContext.Provider
+      value={{
+        displayBalance,
+      }}
+    >
+      {children}
+    </AppContext.Provider>
+  )
 }
 
 export const useAppContext = () => useContext(AppContext)
