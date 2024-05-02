@@ -8,16 +8,24 @@ import { BalanceUnit } from '@/enums'
 
 interface IAppContext {
   displayBalance?: (amountSat: number, unit: BalanceUnit) => string
+  changeBalanceUnit: () => void
+  balanceUnit: BalanceUnit
 }
 
-export const AppContext = createContext<IAppContext>({})
+export const AppContext = createContext<IAppContext>({
+  changeBalanceUnit: () => {},
+  balanceUnit: BalanceUnit.SATS,
+})
 
 interface IAppContextProviderProps extends PropsWithChildren {}
+
+const unitList = [BalanceUnit.SATS, BalanceUnit.THB]
 
 export const AppContextProvider: FC<IAppContextProviderProps> = ({ children }) => {
   const isMounted = useIsMounted()
   const [priceTHB, setPriceTHB] = useState(0)
   const [priceUSD, setPriceUSD] = useState(0)
+  const [balanceUnitIdx, setBalanceUnitIdx] = useState(0)
 
   const fetchPrice = async () => {
     try {
@@ -53,10 +61,20 @@ export const AppContextProvider: FC<IAppContextProviderProps> = ({ children }) =
     [priceTHB, priceUSD]
   )
 
+  const balanceUnit = useMemo(() => unitList[balanceUnitIdx], [balanceUnitIdx])
+
+  const changeBalanceUnit = useCallback(() => {
+    setBalanceUnitIdx((prev) => {
+      return prev + 1 >= unitList.length ? 0 : prev + 1
+    })
+  }, [])
+
   return (
     <AppContext.Provider
       value={{
         displayBalance,
+        changeBalanceUnit,
+        balanceUnit,
       }}
     >
       {children}

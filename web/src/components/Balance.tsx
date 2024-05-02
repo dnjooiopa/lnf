@@ -9,14 +9,11 @@ import { useAppContext } from '@/contexts/AppContext'
 
 interface IBalanceProps {}
 
-const unitList = [BalanceUnit.SATS, BalanceUnit.THB]
-
 const Balance: FC<IBalanceProps> = ({}) => {
   const isMounted = useIsMounted()
-  const { displayBalance } = useAppContext()
+  const { displayBalance, changeBalanceUnit, balanceUnit } = useAppContext()
   const [isLoading, setIsLoading] = useState(true)
   const [balanceSat, setBalanceSat] = useState(0)
-  const [balanceUnitIdx, setBalanceUnitIdx] = useState(0)
 
   const fetchBalance = async () => {
     try {
@@ -37,18 +34,14 @@ const Balance: FC<IBalanceProps> = ({}) => {
     return () => {}
   }, [isMounted])
 
-  const unit = useMemo(() => unitList[balanceUnitIdx], [balanceUnitIdx])
-
   return (
     <div
       onClick={() => {
-        setBalanceUnitIdx((prev) => {
-          return prev + 1 >= unitList.length ? 0 : prev + 1
-        })
+        changeBalanceUnit()
       }}
     >
-      <h1 className="text-6xl">{isLoading || !displayBalance ? '...' : displayBalance(balanceSat, unit)}</h1>
-      <p className="mt-2 text-lg">{unit}</p>
+      <h1 className="text-6xl">{isLoading || !displayBalance ? '...' : displayBalance(balanceSat, balanceUnit)}</h1>
+      <p className="mt-2 text-lg">{balanceUnit}</p>
     </div>
   )
 }
