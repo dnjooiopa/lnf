@@ -9,6 +9,7 @@ import { TransactionType } from '@/enums'
 import { shortenTime } from '@/utils/date'
 import { LnFService } from '@/services/lnf'
 import { useAppContext } from '@/contexts/AppContext'
+import { getUnitSymbol } from '@/utils/unit'
 
 const TxItem = ({ amountSat, description, createdAt, type }: Transaction) => {
   const { displayAmount, amountUnit } = useAppContext()
@@ -42,7 +43,7 @@ const TxItem = ({ amountSat, description, createdAt, type }: Transaction) => {
       </div>
       <div>
         <span className={`text-lg ${amountColor}`}>
-          {displayAmt} {amountUnit}
+          {displayAmt} {getUnitSymbol(amountUnit)}
         </span>
       </div>
     </div>
