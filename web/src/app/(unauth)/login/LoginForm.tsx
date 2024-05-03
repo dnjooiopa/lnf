@@ -20,7 +20,7 @@ const Login: FC<{}> = () => {
 
     try {
       await AuthService.login({ pin })
-      replace('/')
+      return replace('/')
     } catch (e) {
       const err = e as IBaseResponseError
       if (err?.code === ErrorCode.INVALID_PIN) {
