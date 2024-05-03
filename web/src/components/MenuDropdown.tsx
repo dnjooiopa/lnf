@@ -27,7 +27,7 @@ const MenuDropdown = () => {
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95"
               >
-                <Menu.Items className="absolute right-0 mt-3 origin-top-right" static>
+                <Menu.Items className="absolute right-0 mt-6 origin-top-right" static>
                   <div className="p-1 w-[128px] rounded border border-gray-700 hover:bg-gray-600">
                     <Menu.Item>{({ active }) => <LogoutButton />}</Menu.Item>
                   </div>
