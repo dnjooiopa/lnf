@@ -31,7 +31,7 @@ const MenuDropdown = () => {
                 leaveTo="transform opacity-0 scale-95"
               >
                 <Menu.Items className="absolute right-0 mt-6 origin-top-right" static>
-                  <div className="w-[160px] rounded border border-gray-700">
+                  <div className="w-[160px] rounded border border-gray-700 bg-black">
                     {appInfo && (
                       <Menu.Item>
                         <div className="p-2 text-gray-400 text-sm">version {appInfo.version}</div>
