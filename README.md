@@ -19,6 +19,7 @@ docker run --name phoenixd -dp 9740:9740 -v {DATA_PATH}:/phoenix/.phoenix/ --net
 Create file .env
 
 ```env
+APP_VERSION=0.0.1
 API_URL=http://phoenixd:9740
 API_KEY=phoenixd_password
 PINS=xxxxxx,yyyyyy

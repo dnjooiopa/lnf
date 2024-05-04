@@ -19,6 +19,8 @@ func MountHandler(m *httpmux.Mux, am *arpc.Manager, pc *PhoenixClient, pr *Price
 
 		m.Handle("/auth.purgealltokens", am.Handler(PurgeAllTokens))
 
+		m.Handle("/app.getinfo", am.Handler(GetAppInfo))
+
 		m.Handle("/lnf.getbalance", am.Handler(pc.GetBalance))
 		m.Handle("/lnf.getinfo", am.Handler(pc.GetNodeInfo))
 		m.Handle("/lnf.createinvoice", am.Handler(pc.CreateInvoice))

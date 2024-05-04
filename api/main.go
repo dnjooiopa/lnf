@@ -11,6 +11,7 @@ import (
 	"github.com/moonrhythm/httpmux"
 	"github.com/moonrhythm/parapet"
 
+	"github.com/dnjooiopa/lnf/app"
 	"github.com/dnjooiopa/lnf/dbctx"
 )
 
@@ -18,6 +19,8 @@ func main() {
 	time.Local = time.UTC
 
 	cfg := NewConfig()
+
+	app.Init(cfg.AppVersion)
 
 	db, err := sql.Open("sqlite3", cfg.DBSource)
 	if err != nil {
