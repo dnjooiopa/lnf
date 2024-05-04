@@ -31,13 +31,17 @@ const MenuDropdown = () => {
                 leaveTo="transform opacity-0 scale-95"
               >
                 <Menu.Items className="absolute right-0 mt-6 origin-top-right" static>
-                  <div className="p-1 w-[160px] rounded border border-gray-700 hover:bg-gray-600">
+                  <div className="w-[160px] rounded border border-gray-700">
                     {appInfo && (
                       <Menu.Item>
-                        {({ active }) => <div className="p-2 text-gray-400 text-sm">version {appInfo.version}</div>}
+                        <div className="p-2 text-gray-400 text-sm">version {appInfo.version}</div>
                       </Menu.Item>
                     )}
-                    <Menu.Item>{({ active }) => <LogoutButton />}</Menu.Item>
+                    <Menu.Item>
+                      <div className=" hover:bg-gray-600">
+                        <LogoutButton />
+                      </div>
+                    </Menu.Item>
                   </div>
                 </Menu.Items>
               </Transition>
