@@ -12,6 +12,7 @@ import useIsMounted from '@/hooks/useIsMounted'
 import { LnFService } from '@/services/lnf'
 import { EventMessage } from '@/types'
 import { Transaction } from '@/types/lnf'
+import Button from '@/components/base/Button'
 
 const Receive: FC<{}> = () => {
   const { Canvas: QRCanvas } = useQRCode()
@@ -98,9 +99,9 @@ const Receive: FC<{}> = () => {
               autoFocus
               onChange={(e) => setAmountSat(parseInt(e.target.value.toLowerCase()))}
             />
-            <button className="w-full h-[48px] p-3 rounded bg-gray-700" type="submit">
+            <Button className="w-full h-[48px] p-3" type="submit">
               {isLoading ? 'Loading...' : 'Create invoice'}
-            </button>
+            </Button>
           </form>
         </Fragment>
       )}
@@ -113,8 +114,8 @@ const Receive: FC<{}> = () => {
 
           <div className="mt-3 mx-auto">
             {!copied ? (
-              <button
-                className="flex gap-1 rounded bg-gray-700 p-2 items-center"
+              <Button
+                className="flex gap-1 items-center"
                 onClick={() => {
                   setCopied(true)
                   setTimeout(() => setCopied(false), 2000)
@@ -123,20 +124,20 @@ const Receive: FC<{}> = () => {
               >
                 <FaCopy className="cursor-pointer w-[32px] h-[32px]" />
                 <span>Copy</span>
-              </button>
+              </Button>
             ) : (
               <p>Copied</p>
             )}
           </div>
 
-          <button
-            className="mt-3 p-2 rounded bg-gray-700"
+          <Button
+            className="mt-3"
             onClick={() => {
               setOpenInvoice(!openInvoice)
             }}
           >
             {openInvoice ? 'Hide invoice' : 'Show invoice'}
-          </button>
+          </Button>
 
           {openInvoice && <p className="mt-1 break-words">{invoice}</p>}
         </div>

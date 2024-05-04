@@ -7,6 +7,7 @@ import { toast } from 'react-toastify'
 import { AuthService } from '@/services/auth'
 import { IBaseResponseError } from '@/types'
 import { ErrorCode } from '@/enums'
+import Button from '@/components/base/Button'
 
 const Login: FC<{}> = () => {
   const { replace } = useRouter()
@@ -43,9 +44,9 @@ const Login: FC<{}> = () => {
         onChange={(e) => setPin(e.target.value)}
         autoFocus
       />
-      <button className="py-2 rounded w-full h-[48px] mt-2 bg-gray-700" type="submit">
+      <Button className="py-2 w-full h-[48px] mt-2" type="submit">
         {isLoading ? 'Loading...' : 'Login'}
-      </button>
+      </Button>
     </form>
   )
 }

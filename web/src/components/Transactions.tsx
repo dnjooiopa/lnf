@@ -10,6 +10,7 @@ import { shortenTime } from '@/utils/date'
 import { LnFService } from '@/services/lnf'
 import { useAppContext } from '@/contexts/AppContext'
 import { getUnitSymbol } from '@/utils/unit'
+import Button from './base/Button'
 
 const TxItem = ({ amountSat, description, createdAt, type }: Transaction) => {
   const { displayAmount, amountUnit } = useAppContext()
@@ -90,14 +91,14 @@ const Transactions: FC<{}> = () => {
       ))}
 
       {hasNext && (
-        <button
-          className="mt-4 p-2 bg-gray-700 rounded"
+        <Button
+          className="mt-4"
           onClick={() => {
             fetchTransactions(limit + 5)
           }}
         >
           {isLoading ? 'Loading...' : 'Load more'}
-        </button>
+        </Button>
       )}
     </div>
   )

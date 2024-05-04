@@ -9,6 +9,7 @@ import { toast } from 'react-toastify'
 import { LnFService } from '@/services/lnf'
 import { decodeInvoice, validInvoice } from '@/utils/invoice'
 import QrScanModal from './QrScanModal'
+import Button from '@/components/base/Button'
 
 const Send: FC<{}> = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -95,23 +96,23 @@ const Send: FC<{}> = () => {
               onChange={(e) => setInvoice(e.target.value)}
             />
             <div className="flex gap-2 w-full">
-              <button
+              <Button
                 type="submit"
                 disabled={!invoice || isLoading || !isValidInvoice}
-                className="flex grow gap-1 items-center justify-center p-2 h-[48px] rounded bg-gray-700"
+                className="flex grow gap-1 items-center justify-center h-[48px]"
               >
                 {sendBtnElem}
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
-                className="flex items-center gap-1 justify-center py-2 px-6 rounded bg-gray-700"
+                className="flex items-center gap-1 justify-center py-2 px-6"
                 onClick={() => {
                   setIsOpenQRScan((prev) => !prev)
                 }}
               >
                 <RiQrScan2Line className="text-3xl" />
                 <span className="max-md:hidden">Scan</span>
-              </button>
+              </Button>
             </div>
           </form>
 

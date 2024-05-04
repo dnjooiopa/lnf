@@ -3,6 +3,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import { QrReader } from 'react-qr-reader'
 
 import { validInvoice } from '@/utils/invoice'
+import Button from '@/components/base/Button'
 
 interface IQrScanProps {
   closeModal: () => void
@@ -69,13 +70,9 @@ const QrScan: FC<IQrScanProps> = ({ closeModal, setInvoice }) => {
                   />
 
                   <div className="mt-auto w-full">
-                    <button
-                      type="button"
-                      className="flex items-center justify-center py-2 w-full rounded bg-gray-700"
-                      onClick={closeModal}
-                    >
+                    <Button type="button" className="flex items-center justify-center w-full" onClick={closeModal}>
                       Cancel
-                    </button>
+                    </Button>
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
