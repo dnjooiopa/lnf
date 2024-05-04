@@ -99,7 +99,7 @@ const Receive: FC<{}> = () => {
               autoFocus
               onChange={(e) => setAmountSat(parseInt(e.target.value.toLowerCase()))}
             />
-            <Button className="w-full h-[48px] p-3" type="submit">
+            <Button type="submit" className="w-full h-[48px] p-3" disabled={isLoading}>
               {isLoading ? 'Loading...' : 'Create invoice'}
             </Button>
           </form>
