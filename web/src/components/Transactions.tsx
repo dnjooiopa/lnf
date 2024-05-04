@@ -2,6 +2,7 @@
 
 import { FC, useEffect, useMemo, useState } from 'react'
 import { RiSendPlaneFill } from 'react-icons/ri'
+import { MdOutlineKeyboardArrowDown } from 'react-icons/md'
 
 import useIsMounted from '@/hooks/useIsMounted'
 import { Transaction } from '@/types/lnf'
@@ -51,14 +52,17 @@ const TxItem = ({ amountSat, description, createdAt, type }: Transaction) => {
   )
 }
 
+const TxLimit = 5
+
 const Transactions: FC<{}> = () => {
   const isMounted = useIsMounted()
   const [isLoading, setIsLoading] = useState(false)
   const [transactions, setTransactions] = useState<Transaction[]>([])
-  const [limit, setLimit] = useState(5)
+  const [limit, setLimit] = useState(TxLimit)
   const [total, setTotal] = useState(0)
 
   const hasNext = useMemo(() => transactions.length < total, [transactions, total])
+  const hasPrev = useMemo(() => limit > TxLimit, [limit])
 
   const fetchTransactions = async (txLimit: number) => {
     setIsLoading(true)
@@ -90,16 +94,29 @@ const Transactions: FC<{}> = () => {
         <TxItem key={i} {...tx} />
       ))}
 
-      {hasNext && (
-        <Button
-          className="mt-4"
-          onClick={() => {
-            fetchTransactions(limit + 5)
-          }}
-        >
-          {isLoading ? 'Loading...' : 'Load more'}
-        </Button>
-      )}
+      <div className="flex gap-2 justify-center">
+        {hasPrev && (
+          <Button
+            className="mt-4 w-[84px] flex justify-center"
+            onClick={() => {
+              fetchTransactions(limit - 5)
+            }}
+          >
+            {isLoading ? '...' : <MdOutlineKeyboardArrowDown className="text-3xl transform rotate-180" />}
+          </Button>
+        )}
+
+        {hasNext && (
+          <Button
+            className="mt-4 w-[84px] flex justify-center"
+            onClick={() => {
+              fetchTransactions(limit + 5)
+            }}
+          >
+            {isLoading ? '...' : <MdOutlineKeyboardArrowDown className="text-3xl" />}
+          </Button>
+        )}
+      </div>
     </div>
   )
 }
