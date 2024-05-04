@@ -5,11 +5,14 @@ import { FC, PropsWithChildren, createContext, useCallback, useContext, useEffec
 import { PriceService } from '@/services/price'
 import useIsMounted from '@/hooks/useIsMounted'
 import { BalanceUnit } from '@/enums'
+import { AppInfo } from '@/types/app'
+import { AppService } from '@/services/app'
 
 interface IAppContext {
   displayAmount?: (amountSat: number, unit: BalanceUnit) => string
   changeAmountUnit: () => void
   amountUnit: BalanceUnit
+  appInfo?: AppInfo
 }
 
 export const AppContext = createContext<IAppContext>({
@@ -26,6 +29,16 @@ export const AppContextProvider: FC<IAppContextProviderProps> = ({ children }) =
   const [priceTHB, setPriceTHB] = useState(0)
   const [priceUSD, setPriceUSD] = useState(0)
   const [balanceUnitIdx, setBalanceUnitIdx] = useState(0)
+  const [appInfo, setAppInfo] = useState<AppInfo>()
+
+  const fetchAppInfo = async () => {
+    try {
+      const res = await AppService.getInfo()
+      setAppInfo(res)
+    } catch (e) {
+      console.error('error:', e)
+    }
+  }
 
   const fetchPrice = async () => {
     try {
@@ -40,6 +53,7 @@ export const AppContextProvider: FC<IAppContextProviderProps> = ({ children }) =
   useEffect(() => {
     if (!isMounted) return
 
+    fetchAppInfo()
     fetchPrice()
   }, [isMounted])
 
@@ -75,6 +89,7 @@ export const AppContextProvider: FC<IAppContextProviderProps> = ({ children }) =
         displayAmount,
         changeAmountUnit,
         amountUnit,
+        appInfo,
       }}
     >
       {children}

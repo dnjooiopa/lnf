@@ -5,8 +5,11 @@ import { Menu, Transition } from '@headlessui/react'
 
 import LogoutButton from './LogoutButton'
 import BurgerCloseIcon from '@/icons/BurgerCloseIcon'
+import { useAppContext } from '@/contexts/AppContext'
 
 const MenuDropdown = () => {
+  const { appInfo } = useAppContext()
+
   return (
     <div className="fixed top-4 right-4 w-56 text-right">
       <Menu as="div" className="relative inline-block text-left">
@@ -29,6 +32,11 @@ const MenuDropdown = () => {
               >
                 <Menu.Items className="absolute right-0 mt-6 origin-top-right" static>
                   <div className="p-1 w-[160px] rounded border border-gray-700 hover:bg-gray-600">
+                    {appInfo && (
+                      <Menu.Item>
+                        {({ active }) => <div className="p-2 text-gray-400 text-sm">version {appInfo.version}</div>}
+                      </Menu.Item>
+                    )}
                     <Menu.Item>{({ active }) => <LogoutButton />}</Menu.Item>
                   </div>
                 </Menu.Items>
