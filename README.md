@@ -2,6 +2,8 @@
 
 Self-hosted Bitcoin Lightning Wallet based on [phoenixd](https://github.com/ACINQ/phoenixd).
 
+<img alt="mobile-screenshot" src="./docs/images/mobile_home.png" height="480px" />
+
 ## Pre-Requisite
 
 Create docker network
