@@ -16,6 +16,8 @@ Run `phoenixd` docker with network `lnf`
 docker run --name phoenixd -dp 9740:9740 -v {DATA_PATH}:/phoenix/.phoenix/ --network lnf --restart unless-stopped ghcr.io/sethforprivacy/phoenixd
 ```
 
+Price API documentation -> [here](https://rapidapi.com/coingecko/api/coingecko)
+
 ## Run api
 
 Create file .env
