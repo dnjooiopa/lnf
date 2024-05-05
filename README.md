@@ -1,5 +1,7 @@
 # lnF
 
+Self-hosted Bitcoin Lightning Wallet based on [phoenixd](https://github.com/ACINQ/phoenixd).
+
 ## Pre-Requisite
 
 Create docker network
