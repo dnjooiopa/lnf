@@ -2,7 +2,10 @@
 
 Self-hosted Bitcoin Lightning Wallet based on [phoenixd](https://github.com/ACINQ/phoenixd).
 
-<img alt="mobile-screenshot" src="./docs/images/mobile_home.png" height="480px" />
+<div style="display: flex">
+  <img alt="mobile-screenshot-home" src="./docs/images/mobile_home.png" height="480px" />
+  <img alt="mobile-screenshot-received" src="./docs/images/mobile_received.png" height="480px" />
+</div>
 
 ## Pre-Requisite
 
