@@ -21,6 +21,11 @@ docker network create lnf
 
 Run `phoenixd` docker with network `lnf`
 
+```env
+# {DATA_PATH}/phoenix.conf
+webhook=http://lnf-api:8080/lnf.webhook
+```
+
 ```sh
 docker run --name phoenixd -dp 9740:9740 -v {DATA_PATH}:/phoenix/.phoenix/ --network lnf --restart unless-stopped ghcr.io/sethforprivacy/phoenixd
 ```
@@ -34,7 +39,7 @@ Create file .env
 ```env
 APP_VERSION=0.0.1
 API_URL=http://phoenixd:9740
-API_KEY=phoenixd_password
+API_KEY=phoenixd_password # from phoenix.conf
 PINS=xxxxxx,yyyyyy
 PRICE_API_KEY=2342343245
 LINE_NOTIFY_TOKEN=xxxxxx # optional
