@@ -64,10 +64,10 @@ export const AppContextProvider: FC<IAppContextProviderProps> = ({ children }) =
           return amountSat.toString()
         case BalanceUnit.THB:
           const blTHB = (amountSat * priceTHB) / 100000000
-          return amountSat > 0 && blTHB <= 0 ? '...' : blTHB.toFixed(2)
+          return amountSat > 0 && blTHB <= 0 ? '...' : blTHB.toLocaleString()
         case BalanceUnit.USD:
           const blUSD = (amountSat * priceUSD) / 100000000
-          return amountSat > 0 && blUSD <= 0 ? '...' : blUSD.toFixed(2)
+          return amountSat > 0 && blUSD <= 0 ? '...' : blUSD.toLocaleString()
         default:
           return amountSat.toString()
       }
