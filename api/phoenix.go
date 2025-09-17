@@ -19,9 +19,8 @@ import (
 var errTransactionNotFound = arpc.NewErrorCode("TRANSACTION_NOT_FOUND", "")
 
 type PhoenixClient struct {
-	apiURL          string
-	apiKey          string
-	lineNotifyToken string
+	apiURL string
+	apiKey string
 }
 
 func NewPhoenixClient(apiURL, apiKey string) *PhoenixClient {
@@ -232,13 +231,6 @@ func (c *PhoenixClient) PayInvoice(ctx context.Context, p *PayInvoiceParams) (*P
 		eventHub.SendMessage(b)
 	}()
 
-	if c.lineNotifyToken != "" {
-		message := "Payment sent: " + strconv.Itoa(result.RecipientAmountSat) + " sats"
-		if err := SendLineNotify(c.lineNotifyToken, message); err != nil {
-			log.Println("[ERR] failed to send line notify", err)
-		}
-	}
-
 	return &result, nil
 }
 
@@ -333,13 +325,6 @@ func (c *PhoenixClient) Webhook(ctx context.Context, p *WebhookParams) error {
 		eventHub.SendMessage(b)
 	}()
 
-	if c.lineNotifyToken != "" {
-		message := "Payment received: " + strconv.Itoa(p.AmountSat) + " sats"
-		if err := SendLineNotify(c.lineNotifyToken, message); err != nil {
-			log.Println("[ERR] failed to send line notify", err)
-		}
-	}
-
 	// do other stuff ...
 	return nil
 }
@@ -379,10 +364,6 @@ func (c *PhoenixClient) ListTransactions(ctx context.Context, p *ListTransaction
 		Total: total,
 		Txs:   txs,
 	}, nil
-}
-
-func (c *PhoenixClient) RegisterLineNotify(token string) {
-	c.lineNotifyToken = token
 }
 
 type KeyValue struct {

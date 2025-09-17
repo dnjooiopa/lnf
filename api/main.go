@@ -43,7 +43,6 @@ func main() {
 	})
 
 	pc := NewPhoenixClient(cfg.APIURL, cfg.APIKey)
-	pc.RegisterLineNotify(cfg.LineNotifyToken)
 
 	pr := NewPrice(cfg.PriceAPIKey)
 
