@@ -1,5 +1,5 @@
 # Build
-FROM golang:1.22.2-alpine
+FROM golang:1.25.3-alpine3.22
 ENV CGO_ENABLED=1
 WORKDIR /workspace
 ADD go.mod go.sum ./
